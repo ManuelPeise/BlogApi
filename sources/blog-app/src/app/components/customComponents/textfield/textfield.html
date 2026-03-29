@@ -1,0 +1,14 @@
+<div class="form-group mb-3">
+  <label class="form-label mb-1 fs-6" for="{{ label.toLowerCase() }}" i18n>{{ label }}</label>
+  <input
+    class="form-control {{ className }}"
+    [type]="type"
+    [id]="label.toLowerCase()"
+    [name]="label.toLowerCase()"
+    [required]="required"
+    [disabled]="disabled"
+    [value]="value"
+    (input)="onInput($event)"
+    (blur)="onTouched()"
+  />
+</div>

@@ -1,0 +1,18 @@
+.form-button {
+  display: block;
+  background-color: #3333ff;
+  height: auto;
+  color: #ffffff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 8px;
+}
+
+.form-button:hover {
+  background-color: #0000b3;
+}
+
+.form-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}

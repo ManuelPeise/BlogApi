@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/01 Web/">
+    <Project Path="Web.Api/Web.Api.csproj" />
+  </Folder>
+  <Folder Name="/02 Service/">
+    <Project Path="Service.Api/Service.Api.csproj" />
+  </Folder>
+  <Folder Name="/03 Logic/">
+    <Project Path="Logic.Services/Logic.Services.csproj" Id="64186341-b45c-4318-b953-6f6ad0690e9f" />
+    <Project Path="Logic.Shared/Logic.Shared.csproj" Id="ff4b4ccd-6021-4c20-913c-0f60fea3cbe3" />
+  </Folder>
+  <Folder Name="/04 Data/">
+    <Project Path="Data.Database/Data.Database.csproj" />
+  </Folder>
+  <Folder Name="/05 Shared/">
+    <Project Path="Shared.Models/Shared.Models.csproj" Id="d5cef830-bfaf-4672-9d51-c39ef60cbf80" />
+  </Folder>
+</Solution>

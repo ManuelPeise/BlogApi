@@ -1,0 +1,41 @@
+<div class="d-flex flex-column h-100 p-4">
+  <div class="flex-grow-1 d-flex justify-content-center align-items-center">
+    <form
+      class="d-flex flex-column p-4 border rounded bg-white"
+      style="max-width: 400px; width: 100%"
+      [formGroup]="signInForm"
+      (ngSubmit)="handleSignIn()"
+    >
+      <div class="text-center">
+        <p class="fs-3 fw-bold mb-3 text-primary">Sign In</p>
+      </div>
+      <app-textfield
+        label="Email Address"
+        type="email"
+        [required]="true"
+        [disabled]="false"
+        formControlName="email"
+      />
+      <app-textfield
+        label="Password"
+        type="password"
+        [required]="true"
+        [disabled]="false"
+        formControlName="password"
+      />
+
+      <div class="error-container w-100 p-1">
+        @if (errorMessage) {
+          <p class="text-danger">{{ errorMessage }}</p>
+        }
+      </div>
+
+      <app-formbutton
+        class="form-button align-self-end"
+        type="submit"
+        [disabled]="false"
+        label="Sign In"
+      />
+    </form>
+  </div>
+</div>

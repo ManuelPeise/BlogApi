@@ -1,0 +1,68 @@
+<div class="d-flex flex-column h-100 p-4">
+  <div class="flex-grow-1 d-flex justify-content-center align-items-center">
+    <form
+      class="d-flex flex-column p-4 border rounded bg-white"
+      style="max-width: 400px; width: 100%"
+      [formGroup]="signupForm"
+      (ngSubmit)="handleSignUp()"
+    >
+      <div class="text-center">
+        <p class="fs-3 fw-bold mb-3 text-primary">Sign Up</p>
+      </div>
+      <app-textfield
+        label="First Name"
+        type="text"
+        [required]="true"
+        [disabled]="false"
+        formControlName="firstName"
+      />
+      <app-textfield
+        label="Last Name"
+        type="text"
+        [required]="true"
+        [disabled]="false"
+        formControlName="lastName"
+      />
+      <app-textfield
+        label="Email Address"
+        type="email"
+        [required]="true"
+        [disabled]="false"
+        formControlName="email"
+      />
+      <app-textfield
+        label="Password"
+        type="password"
+        [required]="true"
+        [disabled]="false"
+        formControlName="password"
+      />
+      <app-textfield
+        label="Confirm Password"
+        type="password"
+        [required]="true"
+        [disabled]="false"
+        formControlName="passwordValidation"
+      />
+      <div class="error-container w-100 p-1">
+        @if (
+          signupForm.errors?.['passwordMismatch'] &&
+          signupForm.controls['passwordValidation'].touched &&
+          !signupForm.controls['passwordValidation'].disabled
+        ) {
+          <p class="text-danger">Passwords do not match</p>
+        }
+        @if (errorMessage) {
+          <p class="text-danger">{{ errorMessage }}</p>
+        }
+      </div>
+
+      <app-formbutton
+        class="form-button align-self-end"
+        type="submit"
+        [disabled]="false"
+        label="Sign Up"
+      />
+    </form>
+  </div>
+</div>

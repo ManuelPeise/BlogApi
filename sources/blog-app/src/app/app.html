@@ -1,0 +1,72 @@
+<div class="container-fluid d-flex flex-column h-100 p-4">
+  <!-- Navbar -->
+  <div class="container">
+    <div class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <div>
+          <a class="navbar-brand" href="#">{{ title() }}</a>
+
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                >Blogs</a
+              >
+            </li>
+            @if (authService.currentUserSignal() != null) {
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="currentUserDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  {{ authService.currentUserSignal()?.email }}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="currentUserDropdown">
+                  <a class="nav-link" routerLink="signin" routerLinkActive="active">Profile</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="nav-link" routerLink="signin" routerLinkActive="active">{{
+                    authService.currentUserSignal()?.blog?.name ?? 'Create Blog'
+                  }}</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="nav-link" href="#" (click)="authService.signOut()">Sign Out</a>
+                </div>
+              </li>
+            }
+            @if (authService.currentUserSignal() == null) {
+              <li class="nav-item">
+                <a class="nav-link" routerLink="signin" routerLinkActive="active">Sign In</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="signup" routerLinkActive="active">Sign Up</a>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT (this grows) -->
+  <div class="container-fluid flex-grow-1 d-flex flex-column mt-4 rounded p-4">
+    <router-outlet></router-outlet>
+  </div>
+</div>
