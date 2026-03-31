@@ -41,7 +41,7 @@ namespace Logic.Services
                 throw new UnauthorizedAccessException();
             }
 
-            var userEntity = await _userUnitOfWork.QueryData(true, x => x.Email == emailAddress, x => x.Blog, x => x.Blog.Posts);
+            var userEntity = await _userUnitOfWork.QueryData(true, x => x.Email == emailAddress, x => x.Blog, x => x.Blog.Posts, x => x.Address, x => x.Address.City, x => x.Address.City.Country);
 
             if (userEntity == null)
             {
@@ -55,6 +55,8 @@ namespace Logic.Services
                 FirstName = userEntity.FirstName,
                 LastName = userEntity.LastName,
                 Email = userEntity.Email,
+                ProfileImage = userEntity.ProfileImage,
+                DateOfBirth = userEntity.DateOfBirth,
                 BlogId = userEntity.BlogId ?? null,
                 Blog = userEntity.Blog != null ? new BlogModel
                 {
@@ -76,6 +78,18 @@ namespace Logic.Services
                         UpdatedAt = p.UpdatedAt,
                         UpdatedBy = p.UpdatedBy
                     }).ToList()
+                } : null,
+                AddressId = userEntity.AddressId ?? 0,
+                Address = userEntity.Address != null ? new AddressModel
+                {
+                    AddressId = userEntity.Address.Id,
+                    Street = userEntity.Address.Street,
+                    HouseNumber = userEntity.Address.HouseNumber,
+                    PostalCode = userEntity?.Address?.City?.PostalCode ?? string.Empty,
+                    CityId = userEntity?.Address?.CityId ?? 0,
+                    CityName = userEntity?.Address?.City?.Name ?? string.Empty,
+                    CountryId = userEntity?.Address?.City?.Country?.Id ?? 0,
+                    CountryName = userEntity?.Address?.City?.Country?.Name ?? string.Empty,
                 } : null,
                 CreatedAt = userEntity.CreatedAt,
                 CreatedBy = userEntity.CreatedBy,

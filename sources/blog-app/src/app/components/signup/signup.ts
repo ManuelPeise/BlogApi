@@ -12,6 +12,7 @@ import { Textfield } from '../customComponents/textfield/textfield';
 import { Formbutton } from '../customComponents/formbutton/formbutton';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { passwordMatchValidator } from '../../lib/validation';
 
 @Component({
   selector: 'app-signup',
@@ -31,8 +32,8 @@ export class Signup {
         firstName: ['', [Validators.required]],
         lastName: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required]],
-        passwordValidation: ['', [Validators.required]],
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        passwordValidation: ['', [Validators.required, Validators.minLength(8)]],
       },
       { validators: passwordMatchValidator },
     );
@@ -51,12 +52,3 @@ export class Signup {
     }
   }
 }
-
-const passwordMatchValidator = (control: AbstractControl): ValidationErrors | null => {
-  const password = control.get('password')?.value;
-  const passwordValidation = control.get('passwordValidation')?.value;
-  if (password !== passwordValidation) {
-    return { passwordMismatch: true };
-  }
-  return null;
-};

@@ -6,6 +6,7 @@ namespace Logic.Services.Interfaces
     {
         Task<string?> SignInAsync(SignInRequest request);
         Task<string?> RefreshToken(RefreshTokenRequest request);
+        Task<string> ChangePassword(ChangePasswordRequestModel request);
         JwtTokenData GetJwtData();
     }
 }

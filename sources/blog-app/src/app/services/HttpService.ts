@@ -1,20 +1,24 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
 
-export class HttpService<TModel> {
-  apiBaseUrl = environment.apiBaseUrl;
-  responseData: Observable<TModel | null> | null = null;
+export class HttpService {
+  private apiBaseUrl = environment.apiBaseUrl;
 
   constructor(private http: HttpClient) {}
 
-  sendRequest(
-    method: string,
+  sendRequest<T>(
+    method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
     endpoint: string,
     data?: any,
     params?: Record<string, string | number | boolean>,
+    headers?: Record<string, string>,
   ) {
     const url = `${this.apiBaseUrl}${endpoint}`;
-    this.responseData = this.http.request<TModel | null>(method, url, { body: data, params });
+
+    return this.http.request<T>(method, url, {
+      body: data,
+      params,
+      headers: new HttpHeaders(headers || {}),
+    });
   }
 }

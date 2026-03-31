@@ -2,6 +2,8 @@
 using Data.Database.Interfaces;
 using Logic.Services;
 using Logic.Services.Interfaces;
+using Logic.Shared;
+using Logic.Shared.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -42,6 +44,7 @@ namespace Web.Api.Bundels
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBlogService, BlogService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             var jwtConfig = configuration.GetSection("Jwt").Get<JwtTokenData>();
 

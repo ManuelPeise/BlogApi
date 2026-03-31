@@ -34,6 +34,7 @@
             "styles": [
               "node_modules/bootstrap/scss/bootstrap.scss",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+              "node_modules/flatpickr/dist/flatpickr.min.css",
               "src/app/styles/styles.scss"
             ],
             "scripts": [

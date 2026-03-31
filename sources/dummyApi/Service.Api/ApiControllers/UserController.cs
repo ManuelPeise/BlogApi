@@ -35,15 +35,15 @@ namespace Service.Api.ApiControllers
         }
 
         [HttpPut(Name = "UpdateUser")]
-        public async Task<UserModel?> UpdateUser([FromBody] UserModel userModel)
+        public async Task<Response<UserModel>> UpdateUser([FromBody] UserModel userModel)
         {
-          return await _userService.UpdateUser(userModel);
+            return await _userService.UpdateUser(userModel);
         }
 
         [HttpDelete("{id}", Name = "DeleteUser")]
         public async Task DeleteUser(int id)
         {
-           await _userService.DeleteUser(id);
+            await _userService.DeleteUser(id);
         }
     }
 }

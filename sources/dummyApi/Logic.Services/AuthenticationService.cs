@@ -2,6 +2,7 @@
 using Data.Database.Interfaces;
 using Logic.Services.Interfaces;
 using Logic.Shared;
+using Logic.Shared.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -15,16 +16,16 @@ namespace Logic.Services
 {
     public class AuthenticationService: IAuthenticationService
     {
-        private readonly IDbRepositoryBase<UserEntity> _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<AuthenticationService> _logger;
         private readonly JwtTokenData _jwtTokenData;
 
         public AuthenticationService(
-            IDbRepositoryBase<UserEntity> userRepository, 
+            IUnitOfWork unitOfWork, 
             ILogger<AuthenticationService> logger,
             IOptions<JwtTokenData> tokenOptions)
         {
-            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
             _logger = logger;
             _jwtTokenData = tokenOptions.Value;
         }
@@ -33,7 +34,7 @@ namespace Logic.Services
         {
             try
             {
-                var userEntity = await _userRepository.QueryData(false, x => x.Email == request.Email, x => x.Credentials);
+                var userEntity = await _unitOfWork.UserTable.QueryData(false, x => x.Email == request.Email, x => x.Credentials);
 
                 if(userEntity == null && userEntity?.Credentials == null)
                 {
@@ -47,7 +48,7 @@ namespace Logic.Services
 
                 userEntity.Credentials.RefreshToken = GenerateRefreshToken();
 
-                await _userRepository.SaveChanges();
+                await _unitOfWork.SaveChanges();
 
                 return GenerateJwt(userEntity);
 
@@ -69,7 +70,7 @@ namespace Logic.Services
 
                 var email = principal.Identity!.Name ?? string.Empty;
 
-                var user = await _userRepository.QueryData(false, x => x.Email == email, x => x.Credentials);
+                var user = await _unitOfWork.UserTable.QueryData(false, x => x.Email == email, x => x.Credentials);
 
                 if (user == null || user?.Credentials == null || user.Credentials.RefreshToken != request.RefreshToken)
                 {
@@ -81,7 +82,7 @@ namespace Logic.Services
 
                 user.Credentials.RefreshToken = newRefreshToken;
 
-                await _userRepository.SaveChanges();
+                await _unitOfWork.SaveChanges();
 
                 return newAccessToken;
 
@@ -94,6 +95,38 @@ namespace Logic.Services
             }
         }
 
+        public async Task<string> ChangePassword(ChangePasswordRequestModel request)
+        {
+            try
+            {
+                var userEntity = await _unitOfWork.UserTable.GetByIdAsync(false, request.UserId, x => x.Credentials);
+
+                if(userEntity == null)
+                {
+                    throw new Exception($"Could not change password of user {request.UserId}, user not found.");
+                }
+
+                if(!PasswordHasher.VerifyPassword(request.CurrentPassword, userEntity.Credentials.PasswordHash))
+                {
+                    throw new Exception($"Submitted password does not match the current password.");
+                }
+
+                userEntity.Credentials.PasswordHash = PasswordHasher.HashPassword(request.UpdatedPassword);
+
+                await _unitOfWork.SaveChanges();
+
+                var jwt = GenerateJwt(userEntity);
+
+                return jwt;
+            }
+            catch (Exception exception)
+            {
+                _logger.Log(LogLevel.Warning, exception, "Token refresh failed");
+
+                return string.Empty;
+            }
+        }
+        
         public JwtTokenData GetJwtData()
         {
             return _jwtTokenData;

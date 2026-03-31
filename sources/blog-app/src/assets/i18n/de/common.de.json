@@ -1,0 +1,10 @@
+{
+  "captionChangePassword": "Passwort ändern",
+  "labelCurrentPassword": "Aktuelles Passwort",
+  "labelNewPassword": "Neues Passwort",
+  "labelConfirmNewPassword": "Neues Passwort bestätigen",
+  "labelCancel": "Abbrechen",
+  "labelSave": "Änderungen speichern",
+  "errorChangePassword": "Fehler beim Ändern des Passworts. Bitte versuchen Sie es erneut.",
+  "labelPasswordChanged": "Passwort erfolgreich geändert."
+}

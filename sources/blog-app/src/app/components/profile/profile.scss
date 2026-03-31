@@ -1,0 +1,91 @@
+.profile-page {
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.profile-banner {
+  position: relative;
+  height: 140px;
+  background: linear-gradient(135deg, #4a90d9 0%, #7b5ea7 100%);
+  border-radius: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 1rem;
+}
+
+.profile-banner-actions {
+  z-index: 1;
+}
+
+.profile-avatar-wrapper {
+  position: absolute;
+  bottom: -48px;
+  left: 2rem;
+}
+
+.profile-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  display: block;
+}
+
+.camera-icon-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid #ddd;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: 0;
+
+  &:hover {
+    background-color: #f2f2f2;
+  }
+}
+
+.profile-identity {
+  padding: 3.5rem 2rem 0.75rem;
+}
+
+.profile-name {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.profile-email {
+  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+
+.section-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.section-divider {
+  margin: 1.5rem 0 0.5rem;
+  opacity: 0.15;
+}

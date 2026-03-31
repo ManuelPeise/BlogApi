@@ -26,6 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Data.Database\Data.Database.csproj" />
     <ProjectReference Include="..\Logic.Services\Logic.Services.csproj" />
+    <ProjectReference Include="..\Logic.Shared\Logic.Shared.csproj" />
     <ProjectReference Include="..\Service.Api\Service.Api.csproj" />
   </ItemGroup>
 

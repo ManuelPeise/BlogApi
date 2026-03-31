@@ -1,0 +1,10 @@
+{
+  "captionChangePassword": "Change Password",
+  "labelCurrentPassword": "Current Password",
+  "labelNewPassword": "New Password",
+  "labelConfirmNewPassword": "Confirm New Password",
+  "labelCancel": "Cancel",
+  "labelSave": "Save Changes",
+  "errorChangePassword": "Error changing password. Please try again.",
+  "labelPasswordChanged": "Password successfully changed."
+}

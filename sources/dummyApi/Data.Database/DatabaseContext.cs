@@ -35,5 +35,8 @@ namespace Data.Database
         public DbSet<UserEntity> UserTable { get; set; }
         public DbSet<BlogEntity> BlogTable { get; set; }
         public DbSet<PostEntity> PostTable { get; set; }
+        public DbSet<AddressEntity> AddressTable { get; set; }
+        public DbSet<CityEntity> CityTable { get; set; }
+        public DbSet<CountryEntity> CountryTable { get; set; }
     }
 }
