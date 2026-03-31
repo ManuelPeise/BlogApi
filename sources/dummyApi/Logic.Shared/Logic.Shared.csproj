@@ -10,4 +10,8 @@
     <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Data.Database\Data.Database.csproj" />
+  </ItemGroup>
+
 </Project>

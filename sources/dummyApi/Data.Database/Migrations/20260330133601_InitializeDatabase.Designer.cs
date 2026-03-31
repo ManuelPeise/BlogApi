@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20260329065545_InitializeDatabase")]
+    [Migration("20260330133601_InitializeDatabase")]
     partial class InitializeDatabase
     {
         /// <inheritdoc />
@@ -21,6 +21,43 @@ namespace Data.Database.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "10.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("Data.Database.Entities.AddressEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("HouseNumber")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.ToTable("AddressTable");
+                });
 
             modelBuilder.Entity("Data.Database.Entities.BlogEntity", b =>
                 {
@@ -61,6 +98,71 @@ namespace Data.Database.Migrations
                             IsPrivate = true,
                             Name = "Tech Blog"
                         });
+                });
+
+            modelBuilder.Entity("Data.Database.Entities.CityEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("CityTable");
+                });
+
+            modelBuilder.Entity("Data.Database.Entities.CountryEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CountryTable");
                 });
 
             modelBuilder.Entity("Data.Database.Entities.PostEntity", b =>
@@ -149,6 +251,9 @@ namespace Data.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int?>("AddressId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("BlogId")
                         .HasColumnType("int");
 
@@ -162,6 +267,9 @@ namespace Data.Database.Migrations
                     b.Property<int>("CredentialsId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -174,6 +282,10 @@ namespace Data.Database.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<byte[]>("ProfileImage")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -181,6 +293,8 @@ namespace Data.Database.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("BlogId");
 
@@ -198,8 +312,27 @@ namespace Data.Database.Migrations
                             CredentialsId = 1,
                             Email = "JohnDoe@gmail.com",
                             FirstName = "John",
-                            LastName = "Doe"
+                            LastName = "Doe",
+                            ProfileImage = new byte[0]
                         });
+                });
+
+            modelBuilder.Entity("Data.Database.Entities.AddressEntity", b =>
+                {
+                    b.HasOne("Data.Database.Entities.CityEntity", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId");
+
+                    b.Navigation("City");
+                });
+
+            modelBuilder.Entity("Data.Database.Entities.CityEntity", b =>
+                {
+                    b.HasOne("Data.Database.Entities.CountryEntity", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId");
+
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("Data.Database.Entities.PostEntity", b =>
@@ -215,6 +348,10 @@ namespace Data.Database.Migrations
 
             modelBuilder.Entity("Data.Database.Entities.UserEntity", b =>
                 {
+                    b.HasOne("Data.Database.Entities.AddressEntity", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
                     b.HasOne("Data.Database.Entities.BlogEntity", "Blog")
                         .WithMany("Users")
                         .HasForeignKey("BlogId");
@@ -224,6 +361,8 @@ namespace Data.Database.Migrations
                         .HasForeignKey("CredentialsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Address");
 
                     b.Navigation("Blog");
 

@@ -5,3 +5,65 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 1rem;
 }
+
+html,
+body,
+app-root {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Make every routed component fill the flex content area */
+router-outlet + * {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Textfield component – global so flatpickr alt input is also styled */
+.custom-textfield {
+  border: none !important;
+  outline: none !important;
+  border-bottom: 2px solid #ced4da !important;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+}
+
+.custom-textfield:focus {
+  border-color: #80bdff !important;
+  box-shadow: none !important;
+}
+
+.custom-textfield:disabled {
+  background-color: transparent !important;
+  color: #bfbfbf !important;
+  opacity: 1 !important;
+}
+
+/* Flatpickr – wrapper must not break flex/grid layout */
+.flatpickr-wrapper {
+  display: block;
+  width: 100%;
+}
+
+/* Flatpickr theme overrides */
+.flatpickr-calendar {
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+  font-family: inherit;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover {
+  background: #4a90d9;
+  border-color: #4a90d9;
+}
+
+.flatpickr-day:hover {
+  background: #e8f0fe;
+}
+
+.flatpickr-months .flatpickr-prev-month:hover svg,
+.flatpickr-months .flatpickr-next-month:hover svg {
+  fill: #4a90d9;
+}

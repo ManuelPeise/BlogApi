@@ -37,5 +37,17 @@ namespace Service.Api.ApiControllers
                 Success = result,
             };
         }
+
+        [HttpPost(Name = "ChangePassword")]
+        public async Task<Response<string>> ChangePassword([FromBody] ChangePasswordRequestModel model)
+        {
+            var result = await _authenticationService.ChangePassword(model);
+
+            return new Response<string>
+            {
+                Success = !string.IsNullOrEmpty(result),
+                Data = result
+            };
+        }
     }
 }
