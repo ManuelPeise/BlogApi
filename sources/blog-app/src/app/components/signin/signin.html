@@ -1,41 +1,46 @@
-<div class="d-flex flex-column h-100 p-4">
-  <div class="flex-grow-1 d-flex justify-content-center align-items-center">
-    <form
-      class="d-flex flex-column p-4 border rounded bg-white"
-      style="max-width: 400px; width: 100%"
-      [formGroup]="signInForm"
-      (ngSubmit)="handleSignIn()"
-    >
-      <div class="text-center">
-        <p class="fs-3 fw-bold mb-3 text-primary">Sign In</p>
-      </div>
-      <app-textfield
-        label="Email Address"
-        type="email"
-        [required]="true"
-        [disabled]="false"
-        formControlName="email"
-      />
-      <app-textfield
-        label="Password"
-        type="password"
-        [required]="true"
-        [disabled]="false"
-        formControlName="password"
-      />
+<div class="signin-page">
+  <div class="signin-left">
+    <div class="signin-greeting">
+      <h1 class="greeting-title">Welcome back!</h1>
+      <p class="greeting-subtitle mt-3">
+        Sign in to manage your blog, publish posts, and connect with your audience.
+      </p>
+    </div>
+  </div>
 
-      <div class="error-container w-100 p-1">
-        @if (errorMessage) {
-          <p class="text-danger">{{ errorMessage }}</p>
+  <div class="signin-right">
+    <div class="signin-form-wrapper">
+      <h2 class="signin-title">Sign In</h2>
+      <p class="signin-subtitle mt-2">Enter your credentials to continue</p>
+
+      <form [formGroup]="signInForm" (ngSubmit)="handleSignIn()">
+        <app-textfield
+          label="Email Address"
+          type="email"
+          [required]="true"
+          formControlName="email"
+        />
+        <app-textfield
+          label="Password"
+          type="password"
+          [required]="true"
+          formControlName="password"
+        />
+
+        @if (errorMessage()) {
+          <p role="alert" class="text-danger fs-6 mt-1 mb-2">{{ errorMessage() }}</p>
         }
-      </div>
 
-      <app-formbutton
-        class="form-button align-self-end"
-        type="submit"
-        [disabled]="false"
-        label="Sign In"
-      />
-    </form>
+        <div class="d-flex justify-content-end mt-5">
+          <app-formbutton type="submit" label="Sign In" [disabled]="signInForm.invalid" />
+        </div>
+      </form>
+
+      <hr class="my-5" />
+      <p class="text-center text-muted mb-0 fs-6">
+        Don't have an account?
+        <a routerLink="/signup" class="signin-link">Sign Up</a>
+      </p>
+    </div>
   </div>
 </div>

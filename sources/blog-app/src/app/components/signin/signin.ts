@@ -1,36 +1,41 @@
-import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { AuthenticationService } from '../../services/AuthenticationService';
 import { Formbutton } from '../customComponents/formbutton/formbutton';
 import { Textfield } from '../customComponents/textfield/textfield';
 
 @Component({
   selector: 'app-signin',
-  imports: [CommonModule, ReactiveFormsModule, Formbutton, Textfield],
+  imports: [ReactiveFormsModule, RouterLink, Formbutton, Textfield],
   templateUrl: './signin.html',
   styleUrls: ['./signin.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Signin {
-  authService = inject(AuthenticationService);
-  signInForm: FormGroup;
-  errorMessage: string | null = null;
+  private readonly authService = inject(AuthenticationService);
+  private readonly formBuilder = inject(FormBuilder);
 
-  constructor(private formBuilder: FormBuilder) {
-    this.signInForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-    });
-  }
+  readonly signInForm = this.formBuilder.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required]],
+  });
 
-  handleSignIn() {
+  readonly errorMessage = signal<string | null>(null);
+
+  handleSignIn(): void {
     if (this.signInForm.valid) {
-      this.authService.signIn(this.signInForm.value);
+      this.authService.signIn({
+        email: this.signInForm.value.email!,
+        password: this.signInForm.value.password!,
+      });
 
       if (this.authService.authenticationError) {
-        this.errorMessage = 'Error, please check your credentials.';
+        this.errorMessage.set('Error, please check your credentials.');
         return;
       }
+
+      this.errorMessage.set(null);
     }
   }
 }
