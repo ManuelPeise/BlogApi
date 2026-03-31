@@ -1,68 +1,73 @@
-<div class="d-flex flex-column h-100 p-4">
-  <div class="flex-grow-1 d-flex justify-content-center align-items-center">
-    <form
-      class="d-flex flex-column p-4 border rounded bg-white"
-      style="max-width: 400px; width: 100%"
-      [formGroup]="signupForm"
-      (ngSubmit)="handleSignUp()"
-    >
-      <div class="text-center">
-        <p class="fs-3 fw-bold mb-3 text-primary">Sign Up</p>
-      </div>
-      <app-textfield
-        label="First Name"
-        type="text"
-        [required]="true"
-        [disabled]="false"
-        formControlName="firstName"
-      />
-      <app-textfield
-        label="Last Name"
-        type="text"
-        [required]="true"
-        [disabled]="false"
-        formControlName="lastName"
-      />
-      <app-textfield
-        label="Email Address"
-        type="email"
-        [required]="true"
-        [disabled]="false"
-        formControlName="email"
-      />
-      <app-textfield
-        label="Password"
-        type="password"
-        [required]="true"
-        [disabled]="false"
-        formControlName="password"
-      />
-      <app-textfield
-        label="Confirm Password"
-        type="password"
-        [required]="true"
-        [disabled]="false"
-        formControlName="passwordValidation"
-      />
-      <div class="error-container w-100 p-1">
+<div class="signup-page">
+  <div class="signup-left">
+    <div class="signup-greeting">
+      <h1 class="greeting-title">{{ labels.captionGetStarted }}</h1>
+      <p class="greeting-subtitle mt-3">{{ labels.subTitleGetStarted }}</p>
+    </div>
+  </div>
+
+  <div class="signup-right">
+    <div class="signup-form-wrapper">
+      <h2 class="signup-title">{{ labels.captionSignUp }}</h2>
+      <p class="signup-subtitle mt-2">{{ labels.subTitleSignUp }}</p>
+
+      <form [formGroup]="signupForm" (ngSubmit)="handleSignUp()">
+        <app-textfield
+          [label]="labels.labelFirstName"
+          type="text"
+          [required]="true"
+          formControlName="firstName"
+        />
+        <app-textfield
+          [label]="labels.labelLastName"
+          type="text"
+          [required]="true"
+          formControlName="lastName"
+        />
+        <app-textfield
+          [label]="labels.labelEmail"
+          type="email"
+          [required]="true"
+          formControlName="email"
+        />
+        <app-textfield
+          [label]="labels.labelPassword"
+          type="password"
+          [required]="true"
+          formControlName="password"
+        />
+        <app-textfield
+          [label]="labels.labelConfirmPassword"
+          type="password"
+          [required]="true"
+          formControlName="passwordValidation"
+        />
+
         @if (
           signupForm.errors?.['passwordMismatch'] &&
           signupForm.controls['passwordValidation'].touched &&
           !signupForm.controls['passwordValidation'].disabled
         ) {
-          <p class="text-danger">Passwords do not match</p>
+          <p role="alert" class="text-danger fs-6 mt-1 mb-2">{{ labels.errorPasswordMismatch }}</p>
         }
-        @if (errorMessage) {
-          <p class="text-danger">{{ errorMessage }}</p>
+        @if (errorMessage()) {
+          <p role="alert" class="text-danger fs-6 mt-1 mb-2">{{ errorMessage() }}</p>
         }
-      </div>
 
-      <app-formbutton
-        class="form-button align-self-end"
-        type="submit"
-        [disabled]="false"
-        label="Sign Up"
-      />
-    </form>
+        <div class="d-flex justify-content-end mt-5">
+          <app-formbutton
+            type="submit"
+            [label]="labels.captionSignUp"
+            [disabled]="signupForm.invalid"
+          />
+        </div>
+      </form>
+
+      <hr class="my-4 mt-5" />
+      <p class="text-center text-muted mb-0 fs-6">
+        {{ labels.labelAlreadyHaveAccount }}
+        <a routerLink="/signin" class="signup-link">{{ labels.labelSignIn }}</a>
+      </p>
+    </div>
   </div>
 </div>

@@ -9,7 +9,7 @@ if (!i18n.isInitialized) {
     .use(HttpBackend)
     // .use(LanguageDetector)
     .init({
-      fallbackLng: 'en',
+      fallbackLng: 'de',
       debug: environment.production ? false : true,
       ns: ['common'],
       defaultNS: 'common',

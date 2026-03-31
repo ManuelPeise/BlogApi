@@ -10,6 +10,7 @@ import { HttpService } from '../../services/HttpService';
 import { IResponseModel } from '../../lib/models/IResponse';
 import { HttpClient } from '@angular/common/http';
 import { LoadingSpinner } from '../customComponents/loading-spinner/loading-spinner';
+import i18n from '../../I18nService';
 
 @Component({
   selector: 'app-profile',
@@ -27,7 +28,7 @@ export class Profile {
     this.normalizeImageSrc(this.profileSignal?.profileImage as Blob | string | null | undefined),
   );
   profileForm: FormGroup;
-
+  labels: any;
   private normalizeImageSrc(src: Blob | string | null | undefined): string {
     if (!src) return 'assets/images/no_image.png';
     if (src instanceof Blob) {
@@ -53,6 +54,7 @@ export class Profile {
   }
 
   constructor(private formBuilder: FormBuilder) {
+    this.loadLabels();
     this.httpService = new HttpService(inject(HttpClient));
     this.profileForm = this.formBuilder.group({
       profileImage: [
@@ -71,6 +73,25 @@ export class Profile {
       country: [this.profileSignal?.address?.countryName ?? ''],
     });
     this.profileForm.markAsPristine();
+  }
+
+  loadLabels() {
+    this.labels = {
+      captionProfileInformation: i18n.t('captionProfileInformation', { ns: 'common' }),
+      captionAddressInformation: i18n.t('captionAddressInformation', { ns: 'common' }),
+      labelFirstName: i18n.t('labelFirstName', { ns: 'common' }),
+      labelLastName: i18n.t('labelLastName', { ns: 'common' }),
+      labelEmail: i18n.t('labelEmail', { ns: 'common' }),
+      labelDateOfBirth: i18n.t('labelDateOfBirth', { ns: 'common' }),
+      labelStreet: i18n.t('labelStreet', { ns: 'common' }),
+      labelHouseNumber: i18n.t('labelHouseNumber', { ns: 'common' }),
+      labelPostalCode: i18n.t('labelPostalCode', { ns: 'common' }),
+      labelCity: i18n.t('labelCity', { ns: 'common' }),
+      labelCountry: i18n.t('labelCountry', { ns: 'common' }),
+      labelChangePassword: i18n.t('labelChangePassword', { ns: 'common' }),
+      labelSaveChanges: i18n.t('labelSave', { ns: 'common' }),
+      labelRevertChanges: i18n.t('labelCancel', { ns: 'common' }),
+    };
   }
 
   onRevertChanges() {

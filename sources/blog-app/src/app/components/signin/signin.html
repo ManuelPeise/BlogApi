@@ -1,27 +1,27 @@
 <div class="signin-page">
   <div class="signin-left">
     <div class="signin-greeting">
-      <h1 class="greeting-title">Welcome back!</h1>
+      <h1 class="greeting-title">{{ labels.captionWelcomeBack }}</h1>
       <p class="greeting-subtitle mt-3">
-        Sign in to manage your blog, publish posts, and connect with your audience.
+        {{ labels.subTitleWelcomeBack }}
       </p>
     </div>
   </div>
 
   <div class="signin-right">
     <div class="signin-form-wrapper">
-      <h2 class="signin-title">Sign In</h2>
-      <p class="signin-subtitle mt-2">Enter your credentials to continue</p>
+      <h2 class="signin-title">{{ labels.captionSignIn }}</h2>
+      <p class="signin-subtitle mt-2">{{ labels.subTitleSignIn }}</p>
 
       <form [formGroup]="signInForm" (ngSubmit)="handleSignIn()">
         <app-textfield
-          label="Email Address"
+          label="{{ labels.labelEmail }}"
           type="email"
           [required]="true"
           formControlName="email"
         />
         <app-textfield
-          label="Password"
+          label="{{ labels.labelPassword }}"
           type="password"
           [required]="true"
           formControlName="password"
@@ -32,14 +32,18 @@
         }
 
         <div class="d-flex justify-content-end mt-5">
-          <app-formbutton type="submit" label="Sign In" [disabled]="signInForm.invalid" />
+          <app-formbutton
+            type="submit"
+            [label]="labels.labelSignIn"
+            [disabled]="signInForm.invalid"
+          />
         </div>
       </form>
 
       <hr class="my-5" />
       <p class="text-center text-muted mb-0 fs-6">
-        Don't have an account?
-        <a routerLink="/signup" class="signin-link">Sign Up</a>
+        {{ labels.labelDontHaveAccount }}
+        <a routerLink="/signup" class="signin-link">{{ labels.labelSignUp }} </a>
       </p>
     </div>
   </div>

@@ -28,26 +28,34 @@
 
     <!-- Profile info -->
     <div class="px-3 px-md-4 pb-3">
-      <h3 class="section-title">Profile Information</h3>
+      <h3 class="section-title">{{ labels.captionProfileInformation }}</h3>
       <div class="row g-3">
         <div class="col-12 col-md-6">
           <app-textfield
             class="w-100"
-            label="First Name"
+            label="{{ labels.labelFirstName }}"
             formControlName="firstName"
           ></app-textfield>
         </div>
         <div class="col-12 col-md-6">
-          <app-textfield class="w-100" label="Last Name" formControlName="lastName"></app-textfield>
+          <app-textfield
+            class="w-100"
+            label="{{ labels.labelLastName }}"
+            formControlName="lastName"
+          ></app-textfield>
         </div>
         <div class="col-12 col-md-9">
-          <app-textfield class="w-100" label="Email" formControlName="email"></app-textfield>
+          <app-textfield
+            class="w-100"
+            label="{{ labels.labelEmail }}"
+            formControlName="email"
+          ></app-textfield>
         </div>
         <div class="col-12 col-md-3">
           <app-textfield
             type="date"
             class="w-100"
-            label="Date of Birth"
+            label="{{ labels.labelDateOfBirth }}"
             [placeHolder]="'Select your date of birth'"
             formControlName="dateOfBirth"
           ></app-textfield>
@@ -55,30 +63,42 @@
       </div>
 
       <hr class="section-divider" />
-      <h3 class="section-title">Address Information</h3>
+      <h3 class="section-title">{{ labels.captionAddressInformation }}</h3>
       <div class="row g-3">
         <div class="col-12 col-md-8">
-          <app-textfield class="w-100" label="Street" formControlName="street"></app-textfield>
+          <app-textfield
+            class="w-100"
+            label="{{ labels.labelStreet }}"
+            formControlName="street"
+          ></app-textfield>
         </div>
         <div class="col-12 col-md-4">
           <app-textfield
             class="w-100"
-            label="House Number"
+            label="{{ labels.labelHouseNumber }}"
             formControlName="houseNumber"
           ></app-textfield>
         </div>
         <div class="col-12 col-md-2">
           <app-textfield
             class="w-100"
-            label="Postal Code"
+            label="{{ labels.labelPostalCode }}"
             formControlName="postalCode"
           ></app-textfield>
         </div>
         <div class="col-12 col-md-5">
-          <app-textfield class="w-100" label="City" formControlName="city"></app-textfield>
+          <app-textfield
+            class="w-100"
+            label="{{ labels.labelCity }}"
+            formControlName="city"
+          ></app-textfield>
         </div>
         <div class="col-12 col-md-5">
-          <app-textfield class="w-100" label="Country" formControlName="country"></app-textfield>
+          <app-textfield
+            class="w-100"
+            label="{{ labels.labelCountry }}"
+            formControlName="country"
+          ></app-textfield>
         </div>
       </div>
     </div>
@@ -87,12 +107,12 @@
   <hr class="section-divider" />
   <div class="d-flex justify-content-end gap-2 px-3 px-md-4 pb-4 mt-4">
     <app-formbutton
-      label="Cancel"
+      label="{{ labels.labelRevertChanges }}"
       [disabled]="!profileForm.dirty"
       (onClick)="onRevertChanges()"
     ></app-formbutton>
     <app-formbutton
-      label="Save Changes"
+      label="{{ labels.labelSaveChanges }}"
       [disabled]="!profileForm.dirty || profileForm.invalid"
       (onClick)="onSaveChanges()"
     ></app-formbutton>
