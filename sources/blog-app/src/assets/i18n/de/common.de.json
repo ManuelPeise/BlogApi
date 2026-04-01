@@ -41,5 +41,16 @@
   "labelCountry": "Land",
   "labelMyBlogs": "Meine Blogs",
   "labelImpressum": "Impressum",
-  "labelPrivacyPolicy": "Datenschutzerklärung"
+  "labelPrivacyPolicy": "Datenschutzerklärung",
+  "captionImpressum": "Impressum",
+  "captionContact": "Kontakt",
+  "captionResponsibility": "Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV",
+  "captionLiability": "Haftung für Inhalte",
+  "liabilityText1": "Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.",
+  "liabilityText2": "Unsere Plattform ermöglicht es registrierten Nutzern, eigene Inhalte (z. B. Blogbeiträge, Texte und Bilder) zu veröffentlichen. Für diese Inhalte sind ausschließlich die jeweiligen Nutzer verantwortlich. Wir übernehmen keine Gewähr für die Richtigkeit, Vollständigkeit oder Rechtmäßigkeit der von Nutzern bereitgestellten Inhalte.",
+  "liabilityText3": "Als Diensteanbieter sind wir gemäß §§ 8 bis 10 TMG nicht verpflichtet, von Nutzern übermittelte oder gespeicherte fremde Informationen dauerhaft zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.",
+  "liabilityText4": "Sobald uns jedoch konkrete Rechtsverletzungen bekannt werden, werden wir entsprechende Inhalte umgehend entfernen.",
+  "liabilityText5": "Wir behalten uns vor, Inhalte zu entfernen, die gegen geltendes Recht oder unsere Nutzungsbedingungen verstoßen.",
+  "captionLiabilityLinks": "Haftung für Links",
+  "liabilityLinkText": "Unsere Plattform kann Links zu externen Websites Dritter enthalten, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich."
 }
