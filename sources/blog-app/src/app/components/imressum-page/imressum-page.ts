@@ -19,17 +19,17 @@ export class ImressumPage {
 
   loadLabels() {
     this.labels = {
-      captionImpressum: i18n.t('captionImpressum', { ns: 'common' }),
-      captionContact: i18n.t('captionContact', { ns: 'common' }),
-      captionResponsibility: i18n.t('captionResponsibility', { ns: 'common' }),
-      captionLiability: i18n.t('captionLiability', { ns: 'common' }),
-      liabilityText1: i18n.t('liabilityText1', { ns: 'common' }),
-      liabilityText2: i18n.t('liabilityText2', { ns: 'common' }),
-      liabilityText3: i18n.t('liabilityText3', { ns: 'common' }),
-      liabilityText4: i18n.t('liabilityText4', { ns: 'common' }),
-      liabilityText5: i18n.t('liabilityText5', { ns: 'common' }),
-      captionLiabilityLinks: i18n.t('captionLiabilityLinks', { ns: 'common' }),
-      liabilityLinkText: i18n.t('liabilityLinkText', { ns: 'common' }),
+      captionImpressum: i18n.t('captionImpressum', { ns: 'impressum' }),
+      captionContact: i18n.t('captionContact', { ns: 'impressum' }),
+      captionResponsibility: i18n.t('captionResponsibility', { ns: 'impressum' }),
+      captionLiability: i18n.t('captionLiability', { ns: 'impressum' }),
+      liabilityText1: i18n.t('liabilityText1', { ns: 'impressum' }),
+      liabilityText2: i18n.t('liabilityText2', { ns: 'impressum' }),
+      liabilityText3: i18n.t('liabilityText3', { ns: 'impressum' }),
+      liabilityText4: i18n.t('liabilityText4', { ns: 'impressum' }),
+      liabilityText5: i18n.t('liabilityText5', { ns: 'impressum' }),
+      captionLiabilityLinks: i18n.t('captionLiabilityLinks', { ns: 'impressum' }),
+      liabilityLinkText: i18n.t('liabilityLinkText', { ns: 'impressum' }),
     };
   }
 }

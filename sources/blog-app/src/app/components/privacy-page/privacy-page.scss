@@ -1,0 +1,38 @@
+.privacy {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  overflow-y: auto;
+  max-height: 100%;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  scrollbar-width: none;
+
+  h1 {
+    margin-bottom: 1.5rem;
+  }
+
+  section {
+    margin-bottom: 3.5rem;
+
+    h2 {
+      margin-bottom: 1rem;
+    }
+
+    p {
+      line-height: 1.6;
+    }
+
+    ul {
+      margin: 0.5rem 0 0 1.5rem;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+    }
+  }
+}
