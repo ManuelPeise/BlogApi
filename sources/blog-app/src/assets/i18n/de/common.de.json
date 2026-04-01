@@ -39,5 +39,7 @@
   "labelPostalCode": "Postleitzahl",
   "labelCity": "Stadt",
   "labelCountry": "Land",
-  "labelMyBlogs": "Meine Blogs"
+  "labelMyBlogs": "Meine Blogs",
+  "labelImpressum": "Impressum",
+  "labelPrivacyPolicy": "Datenschutzerklärung"
 }

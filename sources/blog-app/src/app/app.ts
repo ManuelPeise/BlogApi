@@ -4,12 +4,13 @@ import { AuthenticationService } from './services/AuthenticationService';
 import { environment } from '../environments/environment';
 import { FormsModule } from '@angular/forms';
 import { LoadingSpinner } from './components/customComponents/loading-spinner/loading-spinner';
+import { Footer } from './components/footer/footer';
 import i18n from './I18nService';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, FormsModule, LoadingSpinner],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, FormsModule, LoadingSpinner, Footer],
   templateUrl: './app.html',
   styleUrls: [],
 })

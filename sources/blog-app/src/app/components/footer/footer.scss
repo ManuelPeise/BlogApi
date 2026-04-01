@@ -1,0 +1,41 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-top: 1px solid #dee2e6;
+  font-size: 0.85rem;
+  color: #6c757d;
+
+  &__copyright {
+    flex-shrink: 0;
+  }
+
+  &__left {
+    display: flex;
+    gap: 1.25rem;
+
+    a {
+      color: #6c757d;
+      text-decoration: none;
+
+      &:hover,
+      &:focus-visible {
+        color: #212529;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.footer-link {
+  color: #6c757d;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    color: #212529;
+    scale: 1.02;
+    text-decoration: none !important;
+  }
+}
