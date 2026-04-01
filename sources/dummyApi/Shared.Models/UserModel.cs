@@ -8,12 +8,13 @@
         public string Email { get; set; } = string.Empty;
         public DateTime? DateOfBirth { get; set; }
         public byte[] ProfileImage { get; set; } = new byte[0];
+        public bool IsMarkedAsDeleted { get; set; } = false;
+        public DateTime? MarkedAsDeletedAt { get; set; } = null;
         public string? CreatedBy { get; set; } = string.Empty;
         public DateTime? CreatedAt { get; set; }
         public string? UpdatedBy { get; set; } = string.Empty;
         public DateTime? UpdatedAt { get; set; }
-        public int? BlogId { get; set; }
-        public BlogModel? Blog { get; set; }
+        public List<BlogModel> Blogs { get; set; } = new List<BlogModel>();
         public UserCredentialsModel? Credentials { get; set; }
         public int AddressId { get; set; }
         public AddressModel? Address { get; set; }

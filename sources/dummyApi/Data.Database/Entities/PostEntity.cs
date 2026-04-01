@@ -7,6 +7,7 @@ namespace Data.Database.Entities
         public string Title { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
         public byte[]? Image { get; set; } = null;
+        public string Author { get; set; } = string.Empty;
         public int BlogId { get; set; }
         public BlogEntity Blog { get; set; }
     }

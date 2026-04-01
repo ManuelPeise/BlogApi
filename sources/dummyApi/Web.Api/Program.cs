@@ -1,6 +1,6 @@
 using Web.Api.Bundels;
 
-string corsPolicy = "ApiCorsPolicy";
+string corsPolicy = "AlloAngular";
 
 var builder = WebApplication.CreateBuilder(args);
 

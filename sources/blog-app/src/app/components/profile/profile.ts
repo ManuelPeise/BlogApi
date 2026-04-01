@@ -128,8 +128,9 @@ export class Profile {
         email: this.profileForm.value.email,
         dateOfBirth: this.profileForm.value.dateOfBirth,
         profileImage: profileImageValue,
-        blogId: this.profileSignal?.blogId ?? null,
-        blog: this.profileSignal?.blog ?? null,
+        isMarkedAsDeleted: this.profileSignal?.isMarkedAsDeleted ?? false,
+        isMarkedAsDeletedAt: this.profileSignal?.isMarkedAsDeletedAt ?? null,
+        blogs: this.profileSignal?.blogs ?? [],
         addressId: this.profileSignal?.addressId ?? null,
         address: {
           id: this.profileSignal?.addressId ?? 0,

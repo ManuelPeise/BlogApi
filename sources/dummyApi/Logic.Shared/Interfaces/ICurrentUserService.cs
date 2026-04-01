@@ -1,6 +1,6 @@
 ﻿using Shared.Models;
 
-namespace Logic.Services.Interfaces
+namespace Logic.Shared.Interfaces
 {
     public interface ICurrentUserService
     {

@@ -1,6 +1,6 @@
 ﻿using Data.Database.Entities;
 using Data.Database.Interfaces;
-using Logic.Services.Interfaces;
+using Logic.Shared.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Shared.Models;
@@ -41,7 +41,7 @@ namespace Logic.Services
                 throw new UnauthorizedAccessException();
             }
 
-            var userEntity = await _userUnitOfWork.QueryData(true, x => x.Email == emailAddress, x => x.Blog, x => x.Blog.Posts, x => x.Address, x => x.Address.City, x => x.Address.City.Country);
+            var userEntity = await _userUnitOfWork.QueryData(true, x => x.Email == emailAddress, x => x.Blogs, x => x.Address, x => x.Address.City, x => x.Address.City.Country);
 
             if (userEntity == null)
             {
@@ -57,28 +57,28 @@ namespace Logic.Services
                 Email = userEntity.Email,
                 ProfileImage = userEntity.ProfileImage,
                 DateOfBirth = userEntity.DateOfBirth,
-                BlogId = userEntity.BlogId ?? null,
-                Blog = userEntity.Blog != null ? new BlogModel
+                Blogs = userEntity.Blogs != null ? userEntity.Blogs.Select(b => new BlogModel
                 {
-                    Id = userEntity.Blog.Id,
-                    Name = userEntity.Blog.Name,
-                    IsPrivate = userEntity.Blog.IsPrivate,
-                    CreatedAt = userEntity.Blog.CreatedAt,
-                    CreatedBy = userEntity.Blog.CreatedBy,
-                    UpdatedAt = userEntity.Blog.UpdatedAt,
-                    UpdatedBy = userEntity.Blog.UpdatedBy,
-                    Posts = userEntity.Blog.Posts.Select(p => new PostModel
+                    Id = b.Id,
+                    Title = b.Title,
+                    Description = b.Description,
+                    Image = b.Image,
+                    IsPrivate = b.IsPrivate,
+                    Posts = b.Posts != null ? b.Posts.Select(p => new PostModel
                     {
                         Id = p.Id,
                         Title = p.Title,
                         Image = p.Image,
                         Content = p.Content,
+                        Author = p.Author,
+                        BlogId = p.BlogId,
                         CreatedAt = p.CreatedAt,
                         CreatedBy = p.CreatedBy,
                         UpdatedAt = p.UpdatedAt,
                         UpdatedBy = p.UpdatedBy
-                    }).ToList()
-                } : null,
+
+                    }).ToList() : new List<PostModel>()
+                }).ToList() : new List<BlogModel>(),
                 AddressId = userEntity.AddressId ?? 0,
                 Address = userEntity.Address != null ? new AddressModel
                 {

@@ -14,10 +14,10 @@ namespace Service.Api.ApiControllers
             _blogService = blogService;
         }
 
-        [HttpPost(Name = "AddPost")]
-        public async Task AddPost([FromBody] PostModel postModel)
+        [HttpPost(Name = "AddPostToBlog")]
+        public async Task AddPostToBlog([FromBody] PostModel postModel)
         {
-            await _blogService.AddPost(postModel);
+            await _blogService.AddPostToBlog(postModel);
         }
 
         [HttpPost(Name = "UpdatePost")]

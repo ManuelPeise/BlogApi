@@ -13,7 +13,7 @@
   "labelSignOut": "Abmelden",
   "captionSignIn": "Anmelden",
   "subTitleSignIn": "Geben Sie Ihre Anmeldedaten ein, um fortzufahren.",
-  "labelEmail": "Mail-Adresse",
+  "labelEmail": "E-Mail-Adresse",
   "labelPassword": "Passwort",
   "labelSignIn": "Anmelden",
   "errorInvalidCredentials": "Fehler, bitte überprüfen Sie Ihre Anmeldedaten.",
@@ -38,5 +38,6 @@
   "labelHouseNumber": "Hausnummer",
   "labelPostalCode": "Postleitzahl",
   "labelCity": "Stadt",
-  "labelCountry": "Land"
+  "labelCountry": "Land",
+  "labelMyBlogs": "Meine Blogs"
 }
