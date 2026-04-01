@@ -1,0 +1,71 @@
+<div class="privacy">
+  <h1>{{ labels.captionPrivacyPolicy }}</h1>
+
+  <section>
+    <h2>{{ labels.captionGeneralInfo }}</h2>
+    <p>{{ labels.textGeneralInfo }}</p>
+  </section>
+
+  <section>
+    <h2>{{ labels.captionResponsibleParty }}</h2>
+    <p>
+      {{ env.impressumName }}<br />
+      {{ env.impressumStreet }}<br />
+      {{ env.impressumCity }}<br />
+      {{ env.impressumCountry }}
+    </p>
+    <p>
+      E-Mail: <a href="mailto:{{ env.impressumContactMail }}">{{ env.impressumContactMail }}</a>
+    </p>
+  </section>
+
+  <section>
+    <h2>{{ labels.captionDataCollection }}</h2>
+    <p>{{ labels.textDataCollectionIntro }}</p>
+    <p>{{ labels.textDataCollectionListIntro }}</p>
+    <ul>
+      <li>{{ labels.dataCollectionItemFirstLastName }}</li>
+      <li>{{ labels.dataCollectionItemEmail }}</li>
+      <li>{{ labels.dataCollectionItemProfilePicture }}</li>
+      <li>{{ labels.dataCollectionItemBirthdate }}</li>
+      <li>{{ labels.dataCollectionItemAddress }}</li>
+      <li>{{ labels.dataCollectionItemCredentials }}</li>
+      <li>{{ labels.dataCollectionItemUsageInfo }}</li>
+    </ul>
+    <p class="mt-4">{{ labels.textDataCollectionRequired }}</p>
+    <p>{{ labels.textDataCollectionOptional }}</p>
+  </section>
+
+  <section>
+    <h2>{{ labels.captionStorageDeletion }}</h2>
+    <p>{{ labels.textStorageActive }}</p>
+    <p>{{ labels.textStorageDeletionRequest }}</p>
+    <p>{{ labels.textStorageRecovery }}</p>
+  </section>
+
+  <section>
+    <h2>{{ labels.captionDataPurpose }}</h2>
+    <p>{{ labels.textDataPurposeIntro }}</p>
+    <ul>
+      <li>{{ labels.dataPurposeItemPlatform }}</li>
+      <li>{{ labels.dataPurposeItemAccounts }}</li>
+      <li>{{ labels.dataPurposeItemBlogContent }}</li>
+      <li>{{ labels.dataPurposeItemSecurity }}</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>{{ labels.captionAuthentication }}</h2>
+    <p>{{ labels.textAuthenticationJwt }}</p>
+    <p>{{ labels.textAuthenticationStorage }}</p>
+  </section>
+
+  <section>
+    <h2>{{ labels.captionDataDisclosure }}</h2>
+    <p>{{ labels.textDataDisclosureIntro }}</p>
+    <ul>
+      <li>{{ labels.dataDisclosureItemLegal }}</li>
+      <li>{{ labels.dataDisclosureItemConsent }}</li>
+    </ul>
+  </section>
+</div>

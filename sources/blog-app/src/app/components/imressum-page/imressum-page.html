@@ -1,0 +1,42 @@
+<div class="impressum">
+  <h1>{{ labels.captionImpressum }}</h1>
+
+  <section>
+    <p>
+      {{ env.impressumName }}<br />
+      {{ env.impressumStreet }}<br />
+      {{ env.impressumCity }}<br />
+      {{ env.impressumCountry }}
+    </p>
+  </section>
+
+  <section>
+    <h2>{{ labels.captionContact }}</h2>
+    <p>
+      E-Mail: <a href="mailto:{{ env.impressumContactMail }}">{{ env.impressumContactMail }}</a>
+    </p>
+  </section>
+
+  <section>
+    <h2>{{ labels.captionResponsibility }}</h2>
+    <p>
+      {{ env.impressumName }}<br />
+      {{ env.impressumStreet }}<br />
+      {{ env.impressumCity }}
+    </p>
+  </section>
+
+  <section>
+    <h2>{{ labels.captionLiability }}</h2>
+    <p>{{ labels.liabilityText1 }}</p>
+    <p>{{ labels.liabilityText2 }}</p>
+    <p>{{ labels.liabilityText3 }}</p>
+    <p>{{ labels.liabilityText4 }}</p>
+    <p>{{ labels.liabilityText5 }}</p>
+  </section>
+
+  <section>
+    <h2>{{ labels.captionLiabilityLinks }}</h2>
+    <p>{{ labels.liabilityLinkText }}</p>
+  </section>
+</div>
