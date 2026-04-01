@@ -8,9 +8,6 @@ import { HttpClient } from '@angular/common/http';
 import { updatePasswordMatchValidator } from '../../lib/validation';
 import { IChangePasswordRequest } from './interfaces/IChangePasswordRequest';
 import { IResponseModel } from '../../lib/models/IResponse';
-import { ITokenData } from '../../lib/models/ITokenData';
-import { LocalStorageService } from '../../services/LocalStorageService';
-import { LocalStorageEnum } from '../../lib/enums/LocalStorageEnum';
 import { AuthenticationService } from '../../services/AuthenticationService';
 
 interface ChangePasswordLabels {
@@ -32,9 +29,6 @@ interface ChangePasswordLabels {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChangePassword {
-  private readonly localStorageService = new LocalStorageService<ITokenData>(
-    LocalStorageEnum.AuthState,
-  );
   private readonly authenticationService = inject(AuthenticationService);
   private readonly formBuilder = inject(FormBuilder);
   private readonly httpService = new HttpService(inject(HttpClient));
@@ -80,9 +74,7 @@ export class ChangePassword {
           IResponseModel<string>
         >('POST', 'authentication/changepassword', changePasswordData)
         .subscribe((response) => {
-          if (response.success && response.data?.length > 0) {
-            const tokenData: ITokenData = { jwt: response.data };
-            this.localStorageService.setItem(tokenData);
+          if (response.success) {
             this.message.set(this.labels.labelPasswordChanged);
           } else {
             this.message.set(this.labels.errorChangePassword);

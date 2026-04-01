@@ -236,6 +236,8 @@ namespace Logic.Services
                 Email = userEntity.Email,
                 DateOfBirth = userEntity.DateOfBirth,
                 ProfileImage = userEntity.ProfileImage,
+                IsMarkedAsDeleted = userEntity.MarkedAsDeleted,
+                MarkedAsDeletedAt = userEntity.MarkedAdDeletedAt,
                 AddressId = userEntity.AddressId ?? 0,
                 Address = userEntity.Address != null ? new AddressModel
                 {
@@ -255,6 +257,8 @@ namespace Logic.Services
                     Description = b.Description,
                     Image = b.Image,
                     IsPrivate = b.IsPrivate,
+                    IsMarkedAsDeleted = b.IsMarkedAsDeleted,
+                    MarkedAsDeletedAt = b.MarkedAsDeletedAt,
                     Posts = b.Posts != null ? b.Posts.Select(p => new PostModel
                     {
                         Id = p.Id,

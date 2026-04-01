@@ -1,11 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { ISignInRequest } from '../lib/models/ISignInRequest';
-import { LocalStorageService } from './LocalStorageService';
-import { LocalStorageEnum } from '../lib/enums/LocalStorageEnum';
-import { ITokenData } from '../lib/models/ITokenData';
 import { IResponseBase, IResponseModel } from '../lib/models/IResponse';
 import { Router } from '@angular/router';
 import { ISignupRequest } from '../lib/models/ISignupRequest';
@@ -22,13 +18,9 @@ export class AuthenticationService {
   http = inject(HttpClient);
   router = inject(Router);
 
-  private localStorageService = new LocalStorageService<ITokenData>(LocalStorageEnum.AuthState);
-
   signIn(request: ISignInRequest) {
     this.http.post<IResponseModel<string>>(this.authUrl, request).subscribe(async (response) => {
       if (response.success) {
-        const tokenData: ITokenData = { jwt: response.data };
-        this.localStorageService.setItem(tokenData);
         this.loadCurrentUser();
         this.router.navigate(['/']);
       } else {
@@ -59,13 +51,7 @@ export class AuthenticationService {
       });
   }
 
-  getToken(): ITokenData | null {
-    const tokenData = this.localStorageService.getItem();
-    return tokenData;
-  }
-
   signOut() {
-    this.localStorageService.deleteItem();
     this.currentUserSignal.set(null);
   }
 }

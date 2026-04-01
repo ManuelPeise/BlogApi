@@ -22,7 +22,7 @@ namespace Data.Database
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<BlogEntity>()
-                .HasMany(b => b.Users)
+                .HasOne(b => b.User)
                 .WithMany(u => u.Blogs);
 
             

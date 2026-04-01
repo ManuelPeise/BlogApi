@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterOutlet, RouterLinkActive, Router } from '@angular/router';
 import { AuthenticationService } from './services/AuthenticationService';
 import { environment } from '../environments/environment';
 import { FormsModule } from '@angular/forms';
@@ -15,12 +15,17 @@ import i18n from './I18nService';
 })
 export class App implements OnInit {
   protected readonly title = signal(environment.appName);
+  router = inject(Router);
   authService = inject(AuthenticationService);
   labels: any;
 
   ngOnInit(): void {
-    this.authService.loadCurrentUser();
     this.loadLabels();
+    this.authService.loadCurrentUser();
+
+    if (this.authService.currentUserSignal() != null) {
+      this.router.navigate(['/']);
+    }
   }
 
   onLogout() {
@@ -29,10 +34,11 @@ export class App implements OnInit {
 
   loadLabels() {
     this.labels = {
-      navBlogs: i18n.t('Blogs', { ns: 'common' }),
-      navProfile: i18n.t('Profile', { ns: 'common' }),
-      navCreateBlog: i18n.t('Create Blog', { ns: 'common' }),
-      navSignOut: i18n.t('Sign Out', { ns: 'common' }),
+      navBlogs: i18n.t('labelBlogs', { ns: 'common' }),
+      navProfile: i18n.t('labelProfile', { ns: 'common' }),
+      navCreateBlog: i18n.t('labelCreateBlog', { ns: 'common' }),
+      navSignOut: i18n.t('labelSignOut', { ns: 'common' }),
+      labelMyBlogs: i18n.t('labelMyBlogs', { ns: 'common' }),
     };
   }
 }

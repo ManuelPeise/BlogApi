@@ -1,4 +1,5 @@
 ﻿using Logic.Services.Interfaces;
+using Logic.Shared.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Models;
 

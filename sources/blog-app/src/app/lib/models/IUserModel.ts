@@ -8,8 +8,9 @@ export interface IUserModel {
   email: string;
   profileImage: Blob | null;
   dateOfBirth: string;
-  blogId: number | null;
-  blog: IBlog | null;
+  isMarkedAsDeleted: boolean;
+  isMarkedAsDeletedAt: string | null;
+  blogs: IBlog[];
   addressId: number | null;
   address: IAddress | null;
   createdBy: string;

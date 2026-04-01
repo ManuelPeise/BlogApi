@@ -1,6 +1,6 @@
 ﻿using Data.Database.Entities;
 using Data.Database.Interfaces;
-using Logic.Services.Interfaces;
+using Logic.Shared.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Shared.Models;
@@ -41,7 +41,7 @@ namespace Logic.Services
                 throw new UnauthorizedAccessException();
             }
 
-            var userEntity = await _userUnitOfWork.QueryData(true, x => x.Email == emailAddress, x => x.Blogs.Select(x => x.Posts), x => x.Address, x => x.Address.City, x => x.Address.City.Country);
+            var userEntity = await _userUnitOfWork.QueryData(true, x => x.Email == emailAddress, x => x.Blogs, x => x.Address, x => x.Address.City, x => x.Address.City.Country);
 
             if (userEntity == null)
             {

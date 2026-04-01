@@ -10,6 +10,7 @@ namespace Data.Database.Interfaces
         Task AddAsync(TEntity entity);
         Task UpdateAsync(bool asNoTracking, TEntity entity);
         Task DeleteAsync(int id);
+        Task DeleteRangeAsync(IEnumerable<int> ids);
         Task SaveChanges(string userName = "System");
     }
 }

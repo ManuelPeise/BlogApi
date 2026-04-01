@@ -94,6 +94,13 @@ namespace Data.Database
             return table.Where(e => e.Id == id).ExecuteDeleteAsync();
         }
 
+        public Task DeleteRangeAsync(IEnumerable<int> ids)
+        {
+            var table = _dbContext.Set<TEntity>();
+            
+            return table.Where(e => ids.Contains(e.Id)).ExecuteDeleteAsync();
+        }
+
         public async Task SaveChanges(string userName = "System")
         {
             var user = _httpContext.User.Identity?.Name ?? userName;

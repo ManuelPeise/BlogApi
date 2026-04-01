@@ -8,6 +8,8 @@
         public string Email { get; set; } = string.Empty;
         public DateTime? DateOfBirth { get; set; }
         public byte[] ProfileImage { get; set; } = new byte[0];
+        public bool IsMarkedAsDeleted { get; set; } = false;
+        public DateTime? MarkedAsDeletedAt { get; set; } = null;
         public string? CreatedBy { get; set; } = string.Empty;
         public DateTime? CreatedAt { get; set; }
         public string? UpdatedBy { get; set; } = string.Empty;

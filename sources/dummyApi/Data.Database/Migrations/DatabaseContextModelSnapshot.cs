@@ -19,21 +19,6 @@ namespace Data.Database.Migrations
                 .HasAnnotation("ProductVersion", "10.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("BlogEntityUserEntity", b =>
-                {
-                    b.Property<int>("BlogsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BlogsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("BlogEntityUserEntity");
-                });
-
             modelBuilder.Entity("Data.Database.Entities.AddressEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -102,8 +87,14 @@ namespace Data.Database.Migrations
                     b.Property<byte[]>("Image")
                         .HasColumnType("longblob");
 
+                    b.Property<bool>("IsMarkedAsDeleted")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<bool>("IsPrivate")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("MarkedAsDeletedAt")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -115,7 +106,12 @@ namespace Data.Database.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("BlogTable");
                 });
@@ -363,21 +359,6 @@ namespace Data.Database.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BlogEntityUserEntity", b =>
-                {
-                    b.HasOne("Data.Database.Entities.BlogEntity", null)
-                        .WithMany()
-                        .HasForeignKey("BlogsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Data.Database.Entities.UserEntity", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Data.Database.Entities.AddressEntity", b =>
                 {
                     b.HasOne("Data.Database.Entities.CityEntity", "City")
@@ -385,6 +366,17 @@ namespace Data.Database.Migrations
                         .HasForeignKey("CityId");
 
                     b.Navigation("City");
+                });
+
+            modelBuilder.Entity("Data.Database.Entities.BlogEntity", b =>
+                {
+                    b.HasOne("Data.Database.Entities.UserEntity", "User")
+                        .WithMany("Blogs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Data.Database.Entities.CityEntity", b =>
@@ -427,6 +419,11 @@ namespace Data.Database.Migrations
             modelBuilder.Entity("Data.Database.Entities.BlogEntity", b =>
                 {
                     b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("Data.Database.Entities.UserEntity", b =>
+                {
+                    b.Navigation("Blogs");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,6 +9,8 @@ namespace Shared.Models
         public string Description { get; set; } = string.Empty;
         public byte[]? Image { get; set; }
         public bool IsPrivate { get; set; } = true;
+        public bool IsMarkedAsDeleted { get; set; } = false;
+        public DateTime? MarkedAsDeletedAt { get; set; } = null;
         public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; } = string.Empty;
         public string? UpdatedBy { get; set; } = string.Empty;

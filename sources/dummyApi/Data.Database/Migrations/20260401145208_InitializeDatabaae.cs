@@ -16,27 +16,6 @@ namespace Data.Database.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "BlogTable",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(type: "longtext", nullable: false),
-                    Description = table.Column<string>(type: "longtext", nullable: false),
-                    Image = table.Column<byte[]>(type: "longblob", nullable: true),
-                    IsPrivate = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "longtext", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BlogTable", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "CountryEntity",
                 columns: table => new
                 {
@@ -70,34 +49,6 @@ namespace Data.Database.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserCredentialsEntity", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "PostTable",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(type: "longtext", nullable: false),
-                    Content = table.Column<string>(type: "longtext", nullable: false),
-                    Image = table.Column<byte[]>(type: "longblob", nullable: true),
-                    Author = table.Column<string>(type: "longtext", nullable: false),
-                    BlogId = table.Column<int>(type: "int", nullable: false),
-                    CreatedBy = table.Column<string>(type: "longtext", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "longtext", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PostTable", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PostTable_BlogTable_BlogId",
-                        column: x => x.BlogId,
-                        principalTable: "BlogTable",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -189,25 +140,58 @@ namespace Data.Database.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "BlogEntityUserEntity",
+                name: "BlogTable",
                 columns: table => new
                 {
-                    BlogsId = table.Column<int>(type: "int", nullable: false),
-                    UsersId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Title = table.Column<string>(type: "longtext", nullable: false),
+                    Description = table.Column<string>(type: "longtext", nullable: false),
+                    Image = table.Column<byte[]>(type: "longblob", nullable: true),
+                    IsPrivate = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsMarkedAsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    MarkedAsDeletedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CreatedBy = table.Column<string>(type: "longtext", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "longtext", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BlogEntityUserEntity", x => new { x.BlogsId, x.UsersId });
+                    table.PrimaryKey("PK_BlogTable", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BlogEntityUserEntity_BlogTable_BlogsId",
-                        column: x => x.BlogsId,
-                        principalTable: "BlogTable",
+                        name: "FK_BlogTable_UserTable_UserId",
+                        column: x => x.UserId,
+                        principalTable: "UserTable",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "PostTable",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Title = table.Column<string>(type: "longtext", nullable: false),
+                    Content = table.Column<string>(type: "longtext", nullable: false),
+                    Image = table.Column<byte[]>(type: "longblob", nullable: true),
+                    Author = table.Column<string>(type: "longtext", nullable: false),
+                    BlogId = table.Column<int>(type: "int", nullable: false),
+                    CreatedBy = table.Column<string>(type: "longtext", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "longtext", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostTable", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BlogEntityUserEntity_UserTable_UsersId",
-                        column: x => x.UsersId,
-                        principalTable: "UserTable",
+                        name: "FK_PostTable_BlogTable_BlogId",
+                        column: x => x.BlogId,
+                        principalTable: "BlogTable",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -244,9 +228,9 @@ namespace Data.Database.Migrations
                 column: "CityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BlogEntityUserEntity_UsersId",
-                table: "BlogEntityUserEntity",
-                column: "UsersId");
+                name: "IX_BlogTable_UserId",
+                table: "BlogTable",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CityEntity_CountryId",
@@ -273,16 +257,13 @@ namespace Data.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BlogEntityUserEntity");
-
-            migrationBuilder.DropTable(
                 name: "PostTable");
 
             migrationBuilder.DropTable(
-                name: "UserTable");
+                name: "BlogTable");
 
             migrationBuilder.DropTable(
-                name: "BlogTable");
+                name: "UserTable");
 
             migrationBuilder.DropTable(
                 name: "AddressTable");

@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Data.Database\Data.Database.csproj" />
+    <ProjectReference Include="..\Shared.Models\Shared.Models.csproj" />
   </ItemGroup>
 
 </Project>

@@ -22,15 +22,14 @@ namespace Service.Api
                 return;
             }
 
-            var authHeader = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+           
+            var authCookie = context.HttpContext.Request.Cookies["access_token"];
 
-            if (string.IsNullOrWhiteSpace(authHeader) || !authHeader.StartsWith("Bearer "))
+            if (string.IsNullOrWhiteSpace(authCookie))
             {
                 context.Result = new ForbidResult();
                 return;
             }
-
-            var token = authHeader.Substring("Bearer ".Length).Trim();
 
             var jwtData = authService.GetJwtData();
 
@@ -40,7 +39,7 @@ namespace Service.Api
                 return;
             }
 
-            var principal = ValidateJwtToken(token, jwtData);
+            var principal = ValidateJwtToken(authCookie, jwtData);
 
             if (principal == null)
             {

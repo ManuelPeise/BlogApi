@@ -1,14 +1,18 @@
-import { HttpInterceptorFn } from '@angular/common/http';
-import { LocalStorageEnum } from '../lib/enums/LocalStorageEnum';
+import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { tap } from 'rxjs';
 
 export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
-  const tokenJson = localStorage.getItem(LocalStorageEnum.AuthState) ?? null;
-  const token = tokenJson ? JSON.parse(tokenJson).jwt : null;
+  const router = inject(Router);
 
-  if (token) {
-    req = req.clone({
-      setHeaders: { Authorization: `Bearer ${token}` },
-    });
-  }
-  return next(req);
+  return next(req.clone({ withCredentials: true })).pipe(
+    tap({
+      error: (err) => {
+        if (err instanceof HttpErrorResponse && err.status === 403) {
+          router.navigate(['/signin']);
+        }
+      },
+    }),
+  );
 };
