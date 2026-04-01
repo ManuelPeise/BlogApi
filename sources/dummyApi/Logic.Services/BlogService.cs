@@ -34,7 +34,9 @@ namespace Logic.Services
                 return filteredEntities.Select(e => new BlogModel
                 {
                     Id = e.Id,
-                    Name = e.Name,
+                    Title = e.Title,
+                    Description = e.Description,
+                    Image = e.Image,
                     IsPrivate = e.IsPrivate,
                     CreatedAt = e.CreatedAt,
                     CreatedBy = e.CreatedBy,

@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace Data.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class InitializeDatabase : Migration
+    public partial class InitializeDatabaae : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,7 +21,9 @@ namespace Data.Database.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false),
+                    Title = table.Column<string>(type: "longtext", nullable: false),
+                    Description = table.Column<string>(type: "longtext", nullable: false),
+                    Image = table.Column<byte[]>(type: "longblob", nullable: true),
                     IsPrivate = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -35,7 +37,7 @@ namespace Data.Database.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "CountryTable",
+                name: "CountryEntity",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -48,7 +50,7 @@ namespace Data.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CountryTable", x => x.Id);
+                    table.PrimaryKey("PK_CountryEntity", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -80,6 +82,7 @@ namespace Data.Database.Migrations
                     Title = table.Column<string>(type: "longtext", nullable: false),
                     Content = table.Column<string>(type: "longtext", nullable: false),
                     Image = table.Column<byte[]>(type: "longblob", nullable: true),
+                    Author = table.Column<string>(type: "longtext", nullable: false),
                     BlogId = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -99,7 +102,7 @@ namespace Data.Database.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "CityTable",
+                name: "CityEntity",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -114,11 +117,11 @@ namespace Data.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CityTable", x => x.Id);
+                    table.PrimaryKey("PK_CityEntity", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CityTable_CountryTable_CountryId",
+                        name: "FK_CityEntity_CountryEntity_CountryId",
                         column: x => x.CountryId,
-                        principalTable: "CountryTable",
+                        principalTable: "CountryEntity",
                         principalColumn: "Id");
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
@@ -141,9 +144,9 @@ namespace Data.Database.Migrations
                 {
                     table.PrimaryKey("PK_AddressTable", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AddressTable_CityTable_CityId",
+                        name: "FK_AddressTable_CityEntity_CityId",
                         column: x => x.CityId,
-                        principalTable: "CityTable",
+                        principalTable: "CityEntity",
                         principalColumn: "Id");
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
@@ -159,7 +162,8 @@ namespace Data.Database.Migrations
                     Email = table.Column<string>(type: "longtext", nullable: false),
                     ProfileImage = table.Column<byte[]>(type: "longblob", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    BlogId = table.Column<int>(type: "int", nullable: true),
+                    MarkedAsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    MarkedAdDeletedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     CredentialsId = table.Column<int>(type: "int", nullable: false),
                     AddressId = table.Column<int>(type: "int", nullable: true),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: false),
@@ -176,11 +180,6 @@ namespace Data.Database.Migrations
                         principalTable: "AddressTable",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_UserTable_BlogTable_BlogId",
-                        column: x => x.BlogId,
-                        principalTable: "BlogTable",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_UserTable_UserCredentialsEntity_CredentialsId",
                         column: x => x.CredentialsId,
                         principalTable: "UserCredentialsEntity",
@@ -189,10 +188,35 @@ namespace Data.Database.Migrations
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "BlogEntityUserEntity",
+                columns: table => new
+                {
+                    BlogsId = table.Column<int>(type: "int", nullable: false),
+                    UsersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BlogEntityUserEntity", x => new { x.BlogsId, x.UsersId });
+                    table.ForeignKey(
+                        name: "FK_BlogEntityUserEntity_BlogTable_BlogsId",
+                        column: x => x.BlogsId,
+                        principalTable: "BlogTable",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BlogEntityUserEntity_UserTable_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "UserTable",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
             migrationBuilder.InsertData(
-                table: "BlogTable",
-                columns: new[] { "Id", "CreatedAt", "CreatedBy", "IsPrivate", "Name", "UpdatedAt", "UpdatedBy" },
-                values: new object[] { 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "System", true, "Tech Blog", null, null });
+                table: "CountryEntity",
+                columns: new[] { "Id", "CreatedAt", "CreatedBy", "Name", "UpdatedAt", "UpdatedBy" },
+                values: new object[] { 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "System", "United States", null, null });
 
             migrationBuilder.InsertData(
                 table: "UserCredentialsEntity",
@@ -200,9 +224,19 @@ namespace Data.Database.Migrations
                 values: new object[] { 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "System", "$2a$12$dxAIJV8PCdWgJIh46rkTy.LDXibzckw/e5qJmCCHPnBfpw4UVGdQW", null, null, null });
 
             migrationBuilder.InsertData(
+                table: "CityEntity",
+                columns: new[] { "Id", "CountryId", "CreatedAt", "CreatedBy", "Name", "PostalCode", "UpdatedAt", "UpdatedBy" },
+                values: new object[] { 1, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "System", "New York", "10001", null, null });
+
+            migrationBuilder.InsertData(
+                table: "AddressTable",
+                columns: new[] { "Id", "CityId", "CreatedAt", "CreatedBy", "HouseNumber", "Street", "UpdatedAt", "UpdatedBy" },
+                values: new object[] { 1, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "System", "123", "Main Street", null, null });
+
+            migrationBuilder.InsertData(
                 table: "UserTable",
-                columns: new[] { "Id", "AddressId", "BlogId", "CreatedAt", "CreatedBy", "CredentialsId", "DateOfBirth", "Email", "FirstName", "LastName", "ProfileImage", "UpdatedAt", "UpdatedBy" },
-                values: new object[] { 1, null, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "System", 1, null, "JohnDoe@gmail.com", "John", "Doe", new byte[0], null, null });
+                columns: new[] { "Id", "AddressId", "CreatedAt", "CreatedBy", "CredentialsId", "DateOfBirth", "Email", "FirstName", "LastName", "MarkedAdDeletedAt", "MarkedAsDeleted", "ProfileImage", "UpdatedAt", "UpdatedBy" },
+                values: new object[] { 1, 1, new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "System", 1, null, "JohnDoe@gmail.com", "John", "Doe", null, false, new byte[0], null, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AddressTable_CityId",
@@ -210,8 +244,13 @@ namespace Data.Database.Migrations
                 column: "CityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CityTable_CountryId",
-                table: "CityTable",
+                name: "IX_BlogEntityUserEntity_UsersId",
+                table: "BlogEntityUserEntity",
+                column: "UsersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CityEntity_CountryId",
+                table: "CityEntity",
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
@@ -225,11 +264,6 @@ namespace Data.Database.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserTable_BlogId",
-                table: "UserTable",
-                column: "BlogId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserTable_CredentialsId",
                 table: "UserTable",
                 column: "CredentialsId");
@@ -239,25 +273,28 @@ namespace Data.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "BlogEntityUserEntity");
+
+            migrationBuilder.DropTable(
                 name: "PostTable");
 
             migrationBuilder.DropTable(
                 name: "UserTable");
 
             migrationBuilder.DropTable(
-                name: "AddressTable");
+                name: "BlogTable");
 
             migrationBuilder.DropTable(
-                name: "BlogTable");
+                name: "AddressTable");
 
             migrationBuilder.DropTable(
                 name: "UserCredentialsEntity");
 
             migrationBuilder.DropTable(
-                name: "CityTable");
+                name: "CityEntity");
 
             migrationBuilder.DropTable(
-                name: "CountryTable");
+                name: "CountryEntity");
         }
     }
 }

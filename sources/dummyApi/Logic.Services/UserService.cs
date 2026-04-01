@@ -27,29 +27,17 @@ namespace Logic.Services
 
             try
             {
-                var userEntities = _unitOfWork.UserTable.GetAll(false, includeBlog ? new Expression<Func<UserEntity, object>>[] { e => e.Blog } : null);
+                var userEntities = _unitOfWork.UserTable.GetAll(false, includeBlog ? new Expression<Func<UserEntity, object>>[] { e => e.Blogs } : null);
 
-                userList = userEntities.Select(e => new UserModel
-                {
-                    Id = e.Id,
-                    FirstName = e.FirstName,
-                    LastName = e.LastName,
-                    Email = e.Email,
-                    ProfileImage = e.ProfileImage,
-                    DateOfBirth = e.DateOfBirth,
-                    AddressId = e.AddressId ?? 0,
-                    BlogId = e.BlogId,
-                    CreatedBy = e.CreatedBy,
-                    CreatedAt = e.CreatedAt
-                }).ToList();
+                userList = userEntities.Select(ToUserModel).ToList();
 
-                return userList;
+                return await Task.FromResult(userList);
             }
             catch (Exception exception)
             {
                 _logger.Log(LogLevel.Error, exception, "An error occurred while retrieving users.");
 
-                return userList;
+                return await Task.FromResult(userList);
             }
         }
 
@@ -57,48 +45,24 @@ namespace Logic.Services
         {
             try
             {
-                var userEntity = await _unitOfWork.UserTable.GetByIdAsync(false, id, includeBlog ? new Expression<Func<UserEntity, object>>[] { e => e.Blog.Posts } : null);
+                var userEntity = await _unitOfWork.UserTable.GetByIdAsync(
+                    false,
+                    id,
+                    includeBlog
+                        ? new Expression<Func<UserEntity, object>>[] { e => e.Blogs, e => e.Blogs.Select(b => b.Posts) }
+                        : null);
 
                 if (userEntity == null)
                 {
                     return null;
                 }
 
-                var userModel = new UserModel
-                {
-                    Id = userEntity.Id,
-                    FirstName = userEntity.FirstName,
-                    LastName = userEntity.LastName,
-                    Email = userEntity.Email,
-                    ProfileImage = userEntity.ProfileImage,
-                    DateOfBirth = userEntity.DateOfBirth,
-                    CreatedBy = userEntity.CreatedBy,
-                    CreatedAt = userEntity.CreatedAt,
-                    AddressId = userEntity.AddressId ?? 0,
-                    BlogId = userEntity.BlogId ?? 0,
-                    Blog = userEntity.Blog != null ? new BlogModel
-                    {
-                        Id = userEntity.Blog.Id,
-                        Name = userEntity.Blog.Name,
-                        IsPrivate = userEntity.Blog.IsPrivate,
-                        CreatedBy = userEntity.Blog.CreatedBy,
-                        CreatedAt = userEntity.Blog.CreatedAt,
-                        Posts = userEntity.Blog.Posts != null ? userEntity.Blog.Posts.Select(p => new PostModel
-                        {
-                            Id = p.Id,
-                            Title = p.Title,
-                            Content = p.Content,
-                            BlogId = p.Blog.Id,
-                            CreatedBy = p.CreatedBy,
-                            CreatedAt = p.CreatedAt
-                        }).ToList() : new List<PostModel>()
-                    } : null
-                };
+                var userModel = ToUserModel(userEntity);
                 return userModel;
             }
             catch (Exception exception)
             {
-                _logger.Log(LogLevel.Error, exception, "An error occurred while retrieving user by ID.");
+                _logger.Log(LogLevel.Error, exception, "An error occurred while retrieving user by ID {UserId}.", id);
                 return null;
             }
         }
@@ -116,7 +80,7 @@ namespace Logic.Services
                     Email = signupModel.Email,
                     ProfileImage = new byte[0],
                     DateOfBirth = null,
-                    Blog = null,
+                    Blogs = new List<BlogEntity>(),
                     Address = null,
                     Credentials = new UserCredentialsEntity
                     {
@@ -137,7 +101,7 @@ namespace Logic.Services
             }
             catch (Exception exception)
             {
-                _logger.Log(LogLevel.Error, exception, "An error occurred while creating a new user.");
+                _logger.Log(LogLevel.Error, exception, "An error occurred while creating a new user with email {Email}.", signupModel.Email);
 
                 return false;
             }
@@ -147,7 +111,7 @@ namespace Logic.Services
         {
             try
             {
-                var userEntity = await _unitOfWork.UserTable.GetByIdAsync(false, userModel.Id, x => x.Credentials, x => x.Address.City.Country, x => x.Blog) ?? null;
+                var userEntity = await _unitOfWork.UserTable.GetByIdAsync(false, userModel.Id, x => x.Credentials, x => x.Address.City.Country);
 
                 if (userEntity == null)
                 {
@@ -181,7 +145,7 @@ namespace Logic.Services
             }
             catch (Exception exception)
             {
-                _logger.Log(LogLevel.Error, exception, "An error occurred while updating the user.");
+                _logger.Log(LogLevel.Error, exception, "An error occurred while updating the user {UserId}.", userModel.Id);
 
                 return new Response<UserModel>
                 {
@@ -200,7 +164,7 @@ namespace Logic.Services
             }
             catch (Exception exception)
             {
-                _logger.Log(LogLevel.Error, exception, "An error occurred while deleting the user.");
+                _logger.Log(LogLevel.Error, exception, "An error occurred while deleting the user {UserId}.", id);
             }
         }
 
@@ -211,34 +175,54 @@ namespace Logic.Services
                 return;
             }
 
-            userEntity.Address = new AddressEntity();
-            userEntity.Address.Street = userModel.Address.Street;
-            userEntity.Address.HouseNumber = userModel.Address.HouseNumber;
-
-            if (!string.IsNullOrEmpty(userModel.Address.CityName))
+            if (userEntity.Address != null)
             {
-                var cityEntity = await _unitOfWork.CityTable.QueryData(false, x => x.Name.ToLower() == userModel.Address.CityName);
+                userEntity.Address.Street = userModel.Address.Street;
+                userEntity.Address.HouseNumber = userModel.Address.HouseNumber;
 
-                if (cityEntity == null)
+                var normalizedCityName = userModel.Address.CityName?.ToLower();
+                var cityEntity = await _unitOfWork.CityTable.QueryData(false, x => x.Name.ToLower() == normalizedCityName);
+
+
+                if (cityEntity == null && !string.IsNullOrEmpty(userModel?.Address?.CityName))
                 {
-                    var countryEntity = await _unitOfWork.CountryTable.GetByIdAsync(false, userModel.Address.CountryId);
-
                     userEntity.Address.City = new CityEntity
                     {
                         Name = userModel.Address.CityName,
                         PostalCode = userModel.Address.PostalCode,
-                        CountryId = countryEntity?.Id,
-                        Country = countryEntity != null ? null : new CountryEntity
-                        {
-                            Name = userModel.Address.CountryName
-                        }
                     };
                 }
                 else
                 {
-                    userEntity.Address.CityId = cityEntity.Id;
+                    userEntity.Address.CityId = cityEntity?.Id;
                 }
 
+                if (!string.IsNullOrEmpty(userModel?.Address?.CountryName))
+                {
+                    var countryEntity = await _unitOfWork.CountryTable.QueryData(false, x => x.Name == userModel.Address.CountryName);
+
+                    if (userEntity.Address?.City != null && countryEntity != null)
+                    {
+                        userEntity.Address.City.CountryId = countryEntity.Id;
+
+                    }
+
+                    if (userEntity?.Address?.City != null && countryEntity == null)
+                    {
+                        userEntity.Address.City.Country = new CountryEntity
+                        {
+                            Name = userModel.Address.CountryName,
+                        };
+                    }
+                }
+            }
+            else
+            {
+                userEntity.Address = new AddressEntity
+                {
+                    Street = userModel.Address.Street,
+                    HouseNumber = userModel.Address.HouseNumber,
+                };
             }
         }
 
@@ -264,20 +248,29 @@ namespace Logic.Services
                     CountryId = userEntity?.Address?.City?.CountryId ?? 0,
                     CountryName = userEntity?.Address.City?.Country?.Name ?? string.Empty
                 } : null,
-                BlogId = userEntity?.BlogId ?? 0,
-                Blog = userEntity?.Blog != null ? new BlogModel
+                Blogs = userEntity?.Blogs != null ? userEntity.Blogs.Select(b => new BlogModel
                 {
-                    Id = userEntity.Blog.Id,
-                    Name = userEntity.Blog.Name,
-                    IsPrivate = userEntity.Blog.IsPrivate,
-                    CreatedBy = userEntity.Blog.CreatedBy,
-                    CreatedAt = userEntity.Blog.CreatedAt
-                } : null,
-
+                    Id = b.Id,
+                    Title = b.Title,
+                    Description = b.Description,
+                    Image = b.Image,
+                    IsPrivate = b.IsPrivate,
+                    Posts = b.Posts != null ? b.Posts.Select(p => new PostModel
+                    {
+                        Id = p.Id,
+                        Title = p.Title,
+                        Content = p.Content,
+                        BlogId = p.Blog.Id,
+                        CreatedBy = p.CreatedBy,
+                        CreatedAt = p.CreatedAt
+                    }).ToList() : new List<PostModel>(),
+                    CreatedBy = b.CreatedBy,
+                    CreatedAt = b.CreatedAt
+                }).ToList() : new List<BlogModel>(),
                 CreatedBy = userEntity?.CreatedBy,
                 CreatedAt = userEntity?.CreatedAt
             };
         }
-            
+
     }
 }

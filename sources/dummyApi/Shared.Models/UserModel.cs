@@ -12,8 +12,7 @@
         public DateTime? CreatedAt { get; set; }
         public string? UpdatedBy { get; set; } = string.Empty;
         public DateTime? UpdatedAt { get; set; }
-        public int? BlogId { get; set; }
-        public BlogModel? Blog { get; set; }
+        public List<BlogModel> Blogs { get; set; } = new List<BlogModel>();
         public UserCredentialsModel? Credentials { get; set; }
         public int AddressId { get; set; }
         public AddressModel? Address { get; set; }

@@ -19,6 +19,21 @@ namespace Data.Database.Migrations
                 .HasAnnotation("ProductVersion", "10.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("BlogEntityUserEntity", b =>
+                {
+                    b.Property<int>("BlogsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BlogsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("BlogEntityUserEntity");
+                });
+
             modelBuilder.Entity("Data.Database.Entities.AddressEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -54,6 +69,17 @@ namespace Data.Database.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("AddressTable");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CityId = 1,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "System",
+                            HouseNumber = "123",
+                            Street = "Main Street"
+                        });
                 });
 
             modelBuilder.Entity("Data.Database.Entities.BlogEntity", b =>
@@ -69,10 +95,17 @@ namespace Data.Database.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("longblob");
+
                     b.Property<bool>("IsPrivate")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -85,16 +118,6 @@ namespace Data.Database.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BlogTable");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "System",
-                            IsPrivate = true,
-                            Name = "Tech Blog"
-                        });
                 });
 
             modelBuilder.Entity("Data.Database.Entities.CityEntity", b =>
@@ -131,7 +154,18 @@ namespace Data.Database.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("CityTable");
+                    b.ToTable("CityEntity");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CountryId = 1,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "System",
+                            Name = "New York",
+                            PostalCode = "10001"
+                        });
                 });
 
             modelBuilder.Entity("Data.Database.Entities.CountryEntity", b =>
@@ -159,7 +193,16 @@ namespace Data.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CountryTable");
+                    b.ToTable("CountryEntity");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "System",
+                            Name = "United States"
+                        });
                 });
 
             modelBuilder.Entity("Data.Database.Entities.PostEntity", b =>
@@ -167,6 +210,10 @@ namespace Data.Database.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<string>("Author")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<int>("BlogId")
                         .HasColumnType("int");
@@ -251,9 +298,6 @@ namespace Data.Database.Migrations
                     b.Property<int?>("AddressId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("BlogId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -279,6 +323,12 @@ namespace Data.Database.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<DateTime?>("MarkedAdDeletedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("MarkedAsDeleted")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<byte[]>("ProfileImage")
                         .IsRequired()
                         .HasColumnType("longblob");
@@ -293,8 +343,6 @@ namespace Data.Database.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.HasIndex("BlogId");
-
                     b.HasIndex("CredentialsId");
 
                     b.ToTable("UserTable");
@@ -303,15 +351,31 @@ namespace Data.Database.Migrations
                         new
                         {
                             Id = 1,
-                            BlogId = 1,
+                            AddressId = 1,
                             CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             CreatedBy = "System",
                             CredentialsId = 1,
                             Email = "JohnDoe@gmail.com",
                             FirstName = "John",
                             LastName = "Doe",
+                            MarkedAsDeleted = false,
                             ProfileImage = new byte[0]
                         });
+                });
+
+            modelBuilder.Entity("BlogEntityUserEntity", b =>
+                {
+                    b.HasOne("Data.Database.Entities.BlogEntity", null)
+                        .WithMany()
+                        .HasForeignKey("BlogsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Data.Database.Entities.UserEntity", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Data.Database.Entities.AddressEntity", b =>
@@ -349,10 +413,6 @@ namespace Data.Database.Migrations
                         .WithMany()
                         .HasForeignKey("AddressId");
 
-                    b.HasOne("Data.Database.Entities.BlogEntity", "Blog")
-                        .WithMany("Users")
-                        .HasForeignKey("BlogId");
-
                     b.HasOne("Data.Database.Entities.UserCredentialsEntity", "Credentials")
                         .WithMany()
                         .HasForeignKey("CredentialsId")
@@ -361,16 +421,12 @@ namespace Data.Database.Migrations
 
                     b.Navigation("Address");
 
-                    b.Navigation("Blog");
-
                     b.Navigation("Credentials");
                 });
 
             modelBuilder.Entity("Data.Database.Entities.BlogEntity", b =>
                 {
                     b.Navigation("Posts");
-
-                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

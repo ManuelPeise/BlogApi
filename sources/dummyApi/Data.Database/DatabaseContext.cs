@@ -23,11 +23,13 @@ namespace Data.Database
 
             modelBuilder.Entity<BlogEntity>()
                 .HasMany(b => b.Users)
-                .WithOne(u => u.Blog)
-                .HasForeignKey(u => u.BlogId);
+                .WithMany(u => u.Blogs);
 
+            
+            modelBuilder.ApplyConfiguration(new AddressSeed());
+            modelBuilder.ApplyConfiguration(new CitySeed());
+            modelBuilder.ApplyConfiguration(new CountrySeed());
             modelBuilder.ApplyConfiguration(new CredentialsSeed());
-            modelBuilder.ApplyConfiguration(new BlogSeed());
             modelBuilder.ApplyConfiguration(new UserSeed());
            
         }
@@ -37,6 +39,6 @@ namespace Data.Database
         public DbSet<PostEntity> PostTable { get; set; }
         public DbSet<AddressEntity> AddressTable { get; set; }
         public DbSet<CityEntity> CityTable { get; set; }
-        public DbSet<CountryEntity> CountryTable { get; set; }
+        public DbSet<CityEntity> CountryTable { get; set; }
     }
 }
