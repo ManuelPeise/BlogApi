@@ -5,6 +5,7 @@ namespace Logic.Services.Interfaces
     public interface IBlogService
     {
         Task<List<BlogModel>> GetBlogs(bool loadPrivate);
+        Task<List<BlogMetaData>> GetPublicBlogMetaDataCollection(bool loadPrivate, int pageSize = 10);
         Task<bool> AddBlog(BlogModel blogModel);
         Task<bool> UpdateBlog(BlogModel blogModel);
         Task<bool> MarkBlogAsDeleted(int blogId);

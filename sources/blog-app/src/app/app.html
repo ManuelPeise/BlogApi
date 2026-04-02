@@ -16,16 +16,27 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              routerLink="/"
-              routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }"
-              >{{ labels.navBlogs }}</a
-            >
-          </li>
+          @if (authService.currentUserSignal() == null) {
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="signin"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                >{{ labels.labelSignIn }}</a
+              >
+            </li>
+          }
           @if (authService.currentUserSignal() != null) {
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="blogs"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                >{{ labels.navBlogs }}</a
+              >
+            </li>
             <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"

@@ -4,7 +4,7 @@ using Shared.Models;
 
 namespace Service.Api.ApiControllers
 {
-    [ApiAuthentication]
+    
     public class BlogController : ApiControllerBase
     {
         private readonly IBlogService _blogService;
@@ -14,6 +14,7 @@ namespace Service.Api.ApiControllers
             _blogService = blogService;
         }
 
+        [ApiAuthentication]
         [HttpGet(Name = "GetBlogs")]
         public async Task<Response<List<BlogModel>>> GetBlogs([FromQuery] bool loadPrivate)
         {
@@ -23,6 +24,18 @@ namespace Service.Api.ApiControllers
             {
                 Success = true,
                 Data = blogs
+            };
+        }
+
+        [HttpGet(Name = "GetPublicBlogMetaDataCollection")]
+        public async Task<Response<List<BlogMetaData>>> GetPublicBlogMetaDataCollection([FromQuery] bool loadPrivate, int page = 1)
+        {
+            var blogMetaData = await _blogService.GetPublicBlogMetaDataCollection(loadPrivate, page);
+
+            return new Response<List<BlogMetaData>>
+            {
+                Success = true,
+                Data = blogMetaData
             };
         }
 

@@ -10,7 +10,7 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
     tap({
       error: (err) => {
         if (err instanceof HttpErrorResponse && err.status === 403) {
-          router.navigate(['/signin']);
+          // router.navigate(['/signin']);
         }
       },
     }),

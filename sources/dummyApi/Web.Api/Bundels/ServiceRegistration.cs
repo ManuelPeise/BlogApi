@@ -72,11 +72,11 @@ namespace Web.Api.Bundels
                         }
                         return Task.CompletedTask;
                     },
-                    OnForbidden = context =>
-                    {
-                        context.Response.StatusCode = StatusCodes.Status403Forbidden;
-                        return Task.CompletedTask;
-                    }
+                    //OnForbidden = context =>
+                    //{
+                    //    context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                    //    return Task.CompletedTask;
+                    //}
                 };
                 options.TokenValidationParameters = new TokenValidationParameters
                 {

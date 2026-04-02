@@ -14,5 +14,6 @@
   </Folder>
   <Folder Name="/05 Shared/">
     <Project Path="Shared.Models/Shared.Models.csproj" Id="d5cef830-bfaf-4672-9d51-c39ef60cbf80" />
+    <Project Path="Shared.Resources/Shared.Resources.csproj" Id="9556958f-1377-43c3-bf63-b0c207816b09" />
   </Folder>
 </Solution>

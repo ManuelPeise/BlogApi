@@ -41,5 +41,11 @@
   "labelCountry": "Land",
   "labelMyBlogs": "Meine Blogs",
   "labelImpressum": "Impressum",
-  "labelPrivacyPolicy": "Datenschutzerklärung"
+  "labelPrivacyPolicy": "Datenschutzerklärung",
+  "captionHomeUserGreeting": "Hey, {firstName}!",
+  "labelYou": "Du",
+  "labelHomeUserGreetingSlogan": "Verwalte deine Blogs, erstelle neue Beiträge, entdecke Inhalte und verbinde dich mit deiner Community.",
+  "labelLastPost": "Letzter Beitrag",
+  "labelPosts": "Beiträge",
+  "labelNoPublicBlogs": "Noch keine öffentlichen Blogs verfügbar. Erstellen Sie Ihren ersten öffentlichen Blog, um Ihre Gedanken mit der Welt zu teilen!"
 }

@@ -40,6 +40,7 @@ export class App implements OnInit {
       navCreateBlog: i18n.t('labelCreateBlog', { ns: 'common' }),
       navSignOut: i18n.t('labelSignOut', { ns: 'common' }),
       labelMyBlogs: i18n.t('labelMyBlogs', { ns: 'common' }),
+      labelSignIn: i18n.t('labelSignIn', { ns: 'common' }),
     };
   }
 }

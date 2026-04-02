@@ -16,6 +16,7 @@
     <ProjectReference Include="..\Data.Database\Data.Database.csproj" />
     <ProjectReference Include="..\Logic.Shared\Logic.Shared.csproj" />
     <ProjectReference Include="..\Shared.Models\Shared.Models.csproj" />
+    <ProjectReference Include="..\Shared.Resources\Shared.Resources.csproj" />
   </ItemGroup>
 
 </Project>

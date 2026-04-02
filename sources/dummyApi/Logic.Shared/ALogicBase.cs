@@ -7,11 +7,12 @@ namespace Logic.Shared
     {
         public ICurrentUserService _currentUserService { get; set; }
 
-        public UserModel CurrentUser { get; private set; }
+        public UserModel? CurrentUser { get; private set; } = null!;
         protected ALogicBase(ICurrentUserService currentUserService)
         {
             _currentUserService = currentUserService;
-            CurrentUser = _currentUserService.CurrentUser ?? throw new InvalidOperationException("Current user cannot be null.");
+            CurrentUser = _currentUserService.CurrentUser ?? null;
+
         }
     }
 }

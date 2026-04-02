@@ -61,6 +61,48 @@ namespace Logic.Services
             }
         }
 
+        public async Task<List<BlogMetaData>> GetPublicBlogMetaDataCollection(bool loadPrivate, int page = 1)
+        {
+            try
+            {
+                var pageSize = 10;
+
+                if (page < 1)
+                {
+                    page = 1;
+                }
+
+//#if DEBUG
+//                return LoadDummyData(page);
+//#else
+                var publicEntities = _blogRepository
+                    .GetAll(true, e => e.Posts)
+                    .Where(e => !e.IsPrivate && !e.IsMarkedAsDeleted)
+                    .OrderBy(e => Guid.NewGuid());
+
+                var pagedEntities = publicEntities
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize);
+
+                return pagedEntities.Select(e => new BlogMetaData
+                {
+                    BlogId = e.Id,
+                    Title = e.Title,
+                    Description = e.Description,
+                    Author = $"{e.User.FirstName} {e.User.LastName}",
+                    Image = e.Image,
+                    PostCount = e.Posts.Count,
+                    LastPostingDate = e.Posts.Any() ? e.Posts.Max(p => p.CreatedAt) : (DateTime?)null
+                }).ToList();
+//#endif
+            }
+            catch (Exception exception)
+            {
+                _logger.Log(LogLevel.Error, exception, "An error occurred while retrieving blogs.");
+                return new List<BlogMetaData>();
+            }
+        }
+
         public async Task<bool> AddBlog(BlogModel blogModel)
         {
             try
@@ -161,7 +203,7 @@ namespace Logic.Services
             try
             {
                 var entity = await _blogRepository.GetByIdAsync(false, id);
-                
+
                 if (entity == null)
                 {
                     _logger.Log(LogLevel.Warning, "Blog with ID {BlogId} not found for restoration.", id);
@@ -170,7 +212,7 @@ namespace Logic.Services
 
                 entity.IsMarkedAsDeleted = false;
                 entity.MarkedAsDeletedAt = null;
-                
+
                 await _blogRepository.SaveChanges();
 
                 return true;
@@ -275,6 +317,69 @@ namespace Logic.Services
                 _logger.Log(LogLevel.Error, exception, "An error occurred while retrieving blogs.");
             }
             return false;
+        }
+
+        private List<BlogMetaData> LoadDummyData(int page = 1)
+        {
+            var blogMetaDataCollection = new List<BlogMetaData>();
+            var authors = new[] { "Alice", "Bob", "Charlie", "David" };
+
+            var images = new List<byte[]>
+            {
+                Resx.Images.Hills,
+                Resx.Images.Strawberry,
+                Resx.Images.AI
+            };
+
+            var rnd = new Random();
+
+
+            blogMetaDataCollection.Add(new BlogMetaData
+            {
+                BlogId = 1,
+                Title = $"Fruits",
+                Description = $"Explore the world of fruits.",
+                Author = authors[0],
+                Image = Resx.Images.Strawberry,
+                PostCount = rnd.Next(0, 20),
+                LastPostingDate = DateTime.UtcNow.AddDays(-rnd.Next(0, 100))
+            });
+
+            blogMetaDataCollection.Add(new BlogMetaData
+            {
+                BlogId = 2,
+                Title = $"AI",
+                Description = $"Explore the world of AI.",
+                Author = authors[1],
+                Image = Resx.Images.AI,
+                PostCount = rnd.Next(0, 20),
+                LastPostingDate = DateTime.UtcNow.AddDays(-rnd.Next(0, 100))
+            });
+
+            blogMetaDataCollection.Add(new BlogMetaData
+            {
+                BlogId = 3,
+                Title = $"Nature",
+                Description = $"Explore the nature.",
+                Author = authors[2],
+                Image = Resx.Images.Hills,
+                PostCount = rnd.Next(0, 20),
+                LastPostingDate = DateTime.UtcNow.AddDays(-rnd.Next(0, 100))
+            });
+
+            blogMetaDataCollection.Add(new BlogMetaData
+            {
+                BlogId = 1,
+                Title = $"Blogs",
+                Description = $"How to create a blog.",
+                Author = authors[3],
+                Image = null,
+                PostCount = rnd.Next(0, 20),
+                LastPostingDate = DateTime.UtcNow.AddDays(-rnd.Next(0, 100))
+            });
+
+
+            return blogMetaDataCollection;
         }
     }
 }

@@ -1,0 +1,43 @@
+<div class="home-page">
+  <div class="home-hero">
+    <h1 class="home-title">{{ labels?.captionHomeUserGreeting }}</h1>
+    <p class="home-subtitle">{{ labels?.labelHomeUserGreetingSlogan }}</p>
+  </div>
+
+  <section class="blog-section">
+    <h2 class="section-heading">{{ labels?.labelMyBlogs }}</h2>
+    @if (blogMetaData().length === 0) {
+      <div class="empty-state">
+        <p class="no-blogs-text">{{ labels?.labelNoBlogsYet }}</p>
+      </div>
+    } @else {
+      <div class="blog-grid">
+        @for (blog of blogMetaData(); track blog.blogId) {
+          <article class="blog-card">
+            <div class="blog-card-image-wrapper">
+              <img [src]="getBlogImageUrl(blog)" [alt]="blog.title" class="blog-card-img" />
+            </div>
+            <div class="blog-card-body">
+              <h3 class="blog-card-title">{{ blog.title }}</h3>
+              <p class="blog-card-description">{{ blog.description }}</p>
+              <div class="blog-card-footer">
+                <span class="blog-author">{{ blog.author }}</span>
+                <div class="blog-card-stats d-flex align-items-end justify-content-between p-2">
+                  <span class="posts-badge">{{ blog.postCount }} {{ labels?.labelPosts }}</span>
+                  <span class="last-post"
+                    >{{ labels?.labelLastPost }}: {{ formatDate(blog.lastPostingDate) }}</span
+                  >
+                </div>
+              </div>
+            </div>
+            <button
+              class="blog-card-overlay-btn"
+              type="button"
+              [attr.aria-label]="blog.title"
+            ></button>
+          </article>
+        }
+      </div>
+    }
+  </section>
+</div>

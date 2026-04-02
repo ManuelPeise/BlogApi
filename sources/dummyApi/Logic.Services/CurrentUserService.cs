@@ -13,7 +13,7 @@ namespace Logic.Services
         private readonly HttpContext _httpContext;
         private readonly ILogger<CurrentUserService> _logger;
         private readonly IDbRepositoryBase<UserEntity> _userUnitOfWork;
-        private readonly UserModel? _currentUser;
+        private UserModel? _currentUser;
 
         public UserModel? CurrentUser => _currentUser;
 
@@ -38,7 +38,7 @@ namespace Logic.Services
 
             if (string.IsNullOrEmpty(emailAddress))
             {
-                throw new UnauthorizedAccessException();
+                return null;
             }
 
             var userEntity = await _userUnitOfWork.QueryData(true, x => x.Email == emailAddress, x => x.Blogs, x => x.Address, x => x.Address.City, x => x.Address.City.Country);
@@ -46,7 +46,7 @@ namespace Logic.Services
             if (userEntity == null)
             {
                 _logger.LogWarning("User with email {Email} not found in database.", emailAddress);
-                throw new UnauthorizedAccessException();
+                return  null;
             }
 
             return new UserModel

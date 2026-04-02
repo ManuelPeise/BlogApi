@@ -41,5 +41,11 @@
   "labelCountry": "Country",
   "labelMyBlogs": "My Blogs",
   "labelImpressum": "Impressum",
-  "labelPrivacyPolicy": "Privacy Policy"
+  "labelPrivacyPolicy": "Privacy Policy",
+  "captionHomeUserGreeting": "Hey, {firstName}!",
+  "labelYou": "You",
+  "labelHomeUserGreetingSlogan": "Manage your blogs, create new posts, discover content, and connect with your community.",
+  "labelLastPost": "Last Post",
+  "labelPosts": "Posts",
+  "labelNoPublicBlogs": "No public blogs available yet. Create your first public blog to share your thoughts with the world!"
 }
